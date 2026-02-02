@@ -1,27 +1,136 @@
 <?php
-add_action( 'acf/init', 'my_acf_init_block_types' );
-function my_acf_init_block_types() {
-	// if ( function_exists( 'acf_register_block_type' ) )
-	// {
-	// 	acf_register_block_type( array(
-	// 		'name' => 'block_home-banner',
-	// 		'title' => ( '[Block] Home banner' ),
-	// 		'description' => ( 'block_home-banner' ),
-	// 		'render_template' => 'blocks/block_home-banner.php',
-	// 		'keywords' => array( 'block_home-banner', 'quote' ),
-	// 		'supports' => array(
-	// 			'anchor' => true,
-	// 		),
-	// 		'api_version' => 3, 
-	// 		'acf_block_version' => 3, 
-	// 		'example' => array(
-	// 			'attributes' => array(
-	// 				'mode' => 'preview',
-	// 				'data' => array(
-	// 					'preview_image_help' => get_stylesheet_directory_uri() . '/assets/preview/home-banner.png',
-	// 				)
-	// 			)
-	// 		)
-	// 	) );
-	// }
+add_action('acf/init', 'my_acf_init_block_types');
+function my_acf_init_block_types()
+{
+	if (function_exists('acf_register_block_type')) {
+		
+
+		acf_register_block_type(array(
+			'name' => 'block_banner',
+			'title' => ('[Block] Banner'),
+			'description' => ('block_banner'),
+			'render_template' => 'blocks/block_banner.php',
+			'keywords' => array('block_banner'),
+			'supports' => array(
+				'anchor' => true,
+			),
+			'api_version' => 3,
+			'acf_block_version' => 3,
+			'example' => array(
+				'attributes' => array(
+					'mode' => 'preview',
+					'data' => array(
+						'preview_image_help' => get_stylesheet_directory_uri() . '/assets/preview/block_banner.png',
+					)
+				)
+			)
+		));
+
+		acf_register_block_type(array(
+			'name' => 'block_blogs',
+			'title' => ('[Block] Blogs'),
+			'description' => ('block_blogs'),
+			'render_template' => 'blocks/block_blogs.php',
+			'keywords' => array('block_blogs'),
+			'supports' => array(
+				'anchor' => true,
+			),
+			'api_version' => 3,
+			'acf_block_version' => 3,
+			'example' => array(
+				'attributes' => array(
+					'mode' => 'preview',
+					'data' => array(
+						'preview_image_help' => get_stylesheet_directory_uri() . '/assets/preview/block_blogs.png',
+					)
+				)
+			)
+		));
+
+		acf_register_block_type(array(
+			'name' => 'block_tour_destination',
+			'title' => ('[Block] Tour Destination'),
+			'description' => ('block_tour_destination'),
+			'render_template' => 'blocks/block_tour_destination.php',
+			'keywords' => array('block_tour_destination'),
+			'supports' => array(
+				'anchor' => true,
+			),
+			'api_version' => 3,
+			'acf_block_version' => 3,
+			'example' => array(
+				'attributes' => array(
+					'mode' => 'preview',
+					'data' => array(
+						'preview_image_help' => get_stylesheet_directory_uri() . '/assets/preview/block_tour_destination.png',
+					)
+				)
+			)
+		));
+
+		
+
+		acf_register_block_type(array(
+			'name' => 'block_tour_last_hour',
+			'title' => ('[Block] Tour Last Hour'),
+			'description' => ('block_tour_last_hour'),
+			'render_template' => 'blocks/block_tour_last_hour.php',
+			'keywords' => array('block_tour_last_hour'),
+			'supports' => array(
+				'anchor' => true,
+			),
+			'api_version' => 3,
+			'acf_block_version' => 3,
+			'example' => array(
+				'attributes' => array(
+					'mode' => 'preview',
+					'data' => array(
+						'preview_image_help' => get_stylesheet_directory_uri() . '/assets/preview/block_tour_last_hour.png',
+					)
+				)
+			)
+		));
+
+		acf_register_block_type(array(
+			'name' => 'block_tour_policy',
+			'title' => ('[Block] Tour Policy'),
+			'description' => ('block_tour_policy'),
+			'render_template' => 'blocks/block_tour_policy.php',
+			'keywords' => array('block_tour_policy'),
+			'supports' => array(
+				'anchor' => true,
+			),
+			'api_version' => 3,
+			'acf_block_version' => 3,
+			'example' => array(
+				'attributes' => array(
+					'mode' => 'preview',
+					'data' => array(
+						'preview_image_help' => get_stylesheet_directory_uri() . '/assets/preview/block_policy.png',
+					)
+				)
+			)
+		));
+
+		acf_register_block_type(array(
+			'name' => 'block_tour_slider',
+			'title' => ('[Block] Tour Slider'),
+			'description' => ('block_tour_slider'),
+			'render_template' => 'blocks/block_tour_slider.php',
+			'keywords' => array('block_tour_slider'),
+			'supports' => array(
+				'anchor' => true,
+			),
+			'api_version' => 3,
+			'acf_block_version' => 3,
+			'example' => array(
+				'attributes' => array(
+					'mode' => 'preview',
+					'data' => array(
+						'preview_image_help' => get_stylesheet_directory_uri() . '/assets/preview/block_tour_slider.png',
+					)
+				)
+			)
+		));
+	}
 }

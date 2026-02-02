@@ -1,13 +1,13 @@
 {
-    "key": "group_680e4f7136aab",
-    "title": "[Option] Header",
+    "key": "group_697c28584bb1b",
+    "title": "[Block] Favorite Destination",
     "fields": [
         {
-            "key": "field_680e4f711b208",
-            "label": "Hướng dẫn",
-            "name": "",
+            "key": "field_697c28583c618",
+            "label": "Ẩn khối",
+            "name": "hide_block",
             "aria-label": "",
-            "type": "message",
+            "type": "true_false",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
@@ -16,83 +16,24 @@
                 "class": "",
                 "id": ""
             },
-            "message": "Để thay đổi Logo, Favicon, Tiêu đề và khẩu hiệu Website: <a target=\"_blank\" href=\"customize.php\">Tùy biến &gt; Nhận dạng site<\/a>.",
-            "new_lines": "wpautop",
-            "esc_html": 0
-        },
-        {
-            "key": "field_6979e234a8924",
-            "label": "Top bar",
-            "name": "",
-            "aria-label": "",
-            "type": "tab",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "placement": "top",
-            "endpoint": 0,
-            "selected": 0
-        },
-        {
-            "key": "field_6979e28ca8927",
-            "label": "Địa chỉ",
-            "name": "",
-            "aria-label": "",
-            "type": "tab",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "placement": "top",
-            "endpoint": 0,
-            "selected": 0
-        },
-        {
-            "key": "field_6979e252a8925",
-            "label": "Icon địa chỉ",
-            "name": "icon_location",
-            "aria-label": "",
-            "type": "image",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "20",
-                "class": "",
-                "id": ""
-            },
-            "return_format": "id",
-            "library": "all",
-            "min_width": "",
-            "min_height": "",
-            "min_size": "",
-            "max_width": "",
-            "max_height": "",
-            "max_size": "",
-            "mime_types": "",
+            "message": "",
+            "default_value": 0,
             "allow_in_bindings": 0,
-            "preview_size": "medium"
+            "ui_on_text": "",
+            "ui_off_text": "",
+            "ui": 1
         },
         {
-            "key": "field_6979e266a8926",
+            "key": "field_697c2e773c619",
             "label": "Tiêu đề",
-            "name": "title_location",
+            "name": "title",
             "aria-label": "",
             "type": "text",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "80",
+                "width": "50",
                 "class": "",
                 "id": ""
             },
@@ -104,27 +45,30 @@
             "append": ""
         },
         {
-            "key": "field_6979e2a3a8928",
-            "label": "Thông tin liên hệ",
-            "name": "",
+            "key": "field_697c2e803c61a",
+            "label": "Mô tả",
+            "name": "description",
             "aria-label": "",
-            "type": "tab",
+            "type": "textarea",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "",
+                "width": "50",
                 "class": "",
                 "id": ""
             },
-            "placement": "top",
-            "endpoint": 0,
-            "selected": 0
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "rows": "",
+            "placeholder": "",
+            "new_lines": ""
         },
         {
-            "key": "field_6979e2ada8929",
-            "label": "Thông tin liên hệ",
-            "name": "list_info",
+            "key": "field_697c2e9f3c61b",
+            "label": "Danh sách điểm đến",
+            "name": "list_destination",
             "aria-label": "",
             "type": "repeater",
             "instructions": "",
@@ -135,30 +79,30 @@
                 "class": "",
                 "id": ""
             },
-            "layout": "table",
+            "layout": "block",
             "pagination": 0,
             "min": 0,
-            "max": 0,
+            "max": 9,
             "collapsed": "",
-            "button_label": "Thêm thông tin",
+            "button_label": "Thêm nội dung",
             "rows_per_page": 20,
             "sub_fields": [
                 {
-                    "key": "field_6979e2bfa892a",
-                    "label": "icon",
-                    "name": "icon_info",
+                    "key": "field_697c2eb53c61c",
+                    "label": "Hình ảnh",
+                    "name": "img",
                     "aria-label": "",
                     "type": "image",
                     "instructions": "",
                     "required": 0,
                     "conditional_logic": 0,
                     "wrapper": {
-                        "width": "20",
+                        "width": "",
                         "class": "",
                         "id": ""
                     },
-                    "return_format": "",
-                    "library": "",
+                    "return_format": "id",
+                    "library": "all",
                     "min_width": "",
                     "min_height": "",
                     "min_size": "",
@@ -168,19 +112,19 @@
                     "mime_types": "",
                     "allow_in_bindings": 0,
                     "preview_size": "medium",
-                    "parent_repeater": "field_6979e2ada8929"
+                    "parent_repeater": "field_697c2e9f3c61b"
                 },
                 {
-                    "key": "field_6979e2cfa892b",
-                    "label": "Tiêu đề",
-                    "name": "title_info",
+                    "key": "field_697c2ef93c61d",
+                    "label": "Tên điềm đến",
+                    "name": "title_name",
                     "aria-label": "",
                     "type": "text",
                     "instructions": "",
                     "required": 0,
                     "conditional_logic": 0,
                     "wrapper": {
-                        "width": "40",
+                        "width": "50",
                         "class": "",
                         "id": ""
                     },
@@ -190,19 +134,19 @@
                     "placeholder": "",
                     "prepend": "",
                     "append": "",
-                    "parent_repeater": "field_6979e2ada8929"
+                    "parent_repeater": "field_697c2e9f3c61b"
                 },
                 {
-                    "key": "field_6979e8a331f45",
-                    "label": "Đường dẫn",
-                    "name": "link_info",
+                    "key": "field_697c30cf3c61e",
+                    "label": "Số lượt khách",
+                    "name": "destination_visitors",
                     "aria-label": "",
                     "type": "text",
                     "instructions": "",
                     "required": 0,
                     "conditional_logic": 0,
                     "wrapper": {
-                        "width": "40",
+                        "width": "50",
                         "class": "",
                         "id": ""
                     },
@@ -212,35 +156,11 @@
                     "placeholder": "",
                     "prepend": "",
                     "append": "",
-                    "parent_repeater": "field_6979e2ada8929"
-                }
-            ]
-        },
-        {
-            "key": "field_6979e300a892d",
-            "label": "Danh sách đường dẫn",
-            "name": "list_link_info",
-            "aria-label": "",
-            "type": "repeater",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "layout": "table",
-            "pagination": 0,
-            "min": 0,
-            "max": 0,
-            "collapsed": "",
-            "button_label": "Thêm thông tin",
-            "rows_per_page": 20,
-            "sub_fields": [
+                    "parent_repeater": "field_697c2e9f3c61b"
+                },
                 {
-                    "key": "field_6979e300a892f",
-                    "label": "Tiêu đề",
+                    "key": "field_697c31643c61f",
+                    "label": "Tiêu đề đường dẫn",
                     "name": "title_link",
                     "aria-label": "",
                     "type": "text",
@@ -258,10 +178,10 @@
                     "placeholder": "",
                     "prepend": "",
                     "append": "",
-                    "parent_repeater": "field_6979e300a892d"
+                    "parent_repeater": "field_697c2e9f3c61b"
                 },
                 {
-                    "key": "field_6979e318a8930",
+                    "key": "field_697c31753c620",
                     "label": "Đường dẫn",
                     "name": "link",
                     "aria-label": "",
@@ -280,7 +200,7 @@
                     "placeholder": "",
                     "prepend": "",
                     "append": "",
-                    "parent_repeater": "field_6979e300a892d"
+                    "parent_repeater": "field_697c2e9f3c61b"
                 }
             ]
         }
@@ -288,9 +208,9 @@
     "location": [
         [
             {
-                "param": "options_page",
+                "param": "block",
                 "operator": "==",
-                "value": "header"
+                "value": "acf\/block-tour-destination"
             }
         ]
     ],
@@ -304,5 +224,5 @@
     "description": "",
     "show_in_rest": 0,
     "display_title": "",
-    "modified": 1769597129
+    "modified": 1769972274
 }

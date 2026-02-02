@@ -132,3 +132,10 @@ pre.wp-block-code {
 .wp-block-image.is-resized > figcaption {
     text-align: center;
 }
+
+
+.destination-like{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}

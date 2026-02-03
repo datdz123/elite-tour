@@ -326,7 +326,7 @@ input[type="number"] {
 img.icon_nav {
     max-width: 16px;
     vertical-align: -2px;
-    margin-right: 1px;
+    margin-right: 5px;
     object-fit: contain;
 }
 
@@ -841,8 +841,4 @@ h1.title-page-search {
 
 .item-blog .block-content p {
     margin-bottom: 0
-}
-.evo-main-menu .nav-link {
-   display:flex;
-   gap:4px;
 }

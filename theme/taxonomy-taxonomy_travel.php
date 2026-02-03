@@ -17,7 +17,7 @@ $banner_image_url = $banner_image_id ? wp_get_attachment_image_url($banner_image
                 <div aria-live="polite" class="slick-list draggable">
                     <div class="slick-track" style="opacity: 1; width: 100%;" role="listbox">
                         <div class="item slick-slide slick-current slick-active" data-slick-index="0" aria-hidden="false" style="width: 100%; position: relative; left: 0px; top: 0px; z-index: 999; opacity: 1;" tabindex="-1" role="option" aria-describedby="slick-slide00">
-                            <a href="<?php echo esc_url(get_term_link($term)); ?>" title="<?php echo esc_attr($term->name); ?>" tabindex="0"><img alt="<?php echo esc_attr($term->name); ?>" src="<?php echo esc_url($banner_image_url); ?>" class="img-responsive center-block" style="opacity: 1;"></a>
+                            <a href="<?php echo esc_url(get_term_link($term)); ?>" title="<?php echo esc_attr($term->name); ?>" tabindex="0"><img alt="<?php echo esc_attr($term->name); ?>" src="<?php echo esc_url($banner_image_url); ?>" class="img-responsive center-block" style="opacity: 1; width:100%;"></a>
                         </div>
                     </div>
                 </div>
@@ -27,43 +27,63 @@ $banner_image_url = $banner_image_id ? wp_get_attachment_image_url($banner_image
 <?php endif; ?>
 <div class="evo-tour-search-all">
     <div class="container">
-        <div class="row no-margin">
-            <div class="col-lg-4 col-md-4 col-sm-12 col-12">
-                <div class="input_group group_a">
-                    <img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/svg/place-localizer.svg" alt="Địa điểm">
-                    <input type="text" aria-label="Bạn muốn đi đâu?" autocomplete="off" placeholder="Bạn muốn đi đâu?" id="name" class="form-control form-hai form-control-lg">
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-3 col-sm-5 col-12 fix-ipad1">
-                <div class="group-search abs">
-                    <div class="group-search-icon">
-                        <img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/svg/date.svg" alt="Tìm kiếm">
-                    </div>
-                    <div class="group-search-content">
-                        <p>Ngày khởi hành</p>
-                        <input class="tourmaster-datepicker hasDatepicker" id="dates" type="text" placeholder="Chọn Ngày khởi hành" data-date-format="dd MM yyyy" readonly="readonly">
+        <form id="taxonomy-tour-search" action="<?php echo esc_url(home_url('/')); ?>" method="get">
+            <input type="hidden" name="post_type" value="travel_service">
+            <div class="row no-margin">
+                <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                    <div class="input_group group_a">
+                        <img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/place-localizer.svg" alt="Địa điểm">
+                        <input type="text" aria-label="Bạn muốn đi đâu?" autocomplete="off" placeholder="Bạn muốn đi đâu?" name="s" id="taxonomy-search-keyword" class="form-control form-hai form-control-lg">
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-3 col-md-3 col-sm-5 col-12 fix-ipad2">
-                <div class="group-search ab">
-                    <div class="group-search-icon">
-                        <img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/svg/paper-plane.svg" alt="Tìm kiếm">
-                    </div>
-                    <div class="group-search-content">
-                        <p>Khởi hành từ</p>
-                        <select name="garden" class="tag-select" required="">
-                            <option value="">Tất cả</option>
-                            <option value="product_type:(Sài Gòn)">Sài Gòn</option>
-                            <option value="product_type:(Hà Nội)">Hà Nội</option>
-                        </select>
+                <div class="col-lg-3 col-md-3 col-sm-5 col-12 fix-ipad1">
+                    <div class="group-search abs">
+                        <div class="group-search-icon">
+                            <img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/date.svg" alt="Tìm kiếm">
+                        </div>
+                        <div class="group-search-content">
+                            <p>Ngày khởi hành</p>
+                            <input class="tourmaster-datepicker" id="taxonomy-dates" type="text" placeholder="Chọn Ngày khởi hành" data-date-format="dd MM yyyy" readonly="readonly">
+                        </div>
                     </div>
                 </div>
+                <div class="col-lg-3 col-md-3 col-sm-5 col-12 fix-ipad2">
+                    <div class="group-search ab">
+                        <div class="group-search-icon">
+                            <img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/paper-plane.svg" alt="Tìm kiếm">
+                        </div>
+                        <div class="group-search-content">
+                            <p><?php _e('Khởi hành từ', 'gnws'); ?></p>
+                            <select name="departure_from" class="tag-select">
+                                <option value=""><?php _e('Tất cả', 'gnws'); ?></option>
+                                <?php
+                                $field_object = acf_get_field('departure_from');
+                                $taxonomy_name = 'taxonomy_khoi_hanh'; // Default taxonomy
+
+                                if ($field_object && !empty($field_object['taxonomy'])) {
+                                    $taxonomy_name = $field_object['taxonomy'];
+                                }
+
+                                $terms = get_terms(array(
+                                    'taxonomy' => $taxonomy_name,
+                                    'hide_empty' => false,
+                                ));
+
+                                if (!is_wp_error($terms) && !empty($terms)) {
+                                    foreach ($terms as $term) {
+                                        echo '<option value="' . esc_attr($term->term_id) . '">' . esc_html($term->name) . '</option>';
+                                    }
+                                }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2 col-12 fix-ipad">
+                    <button type="submit" class="hs-submit btn-style btn btn-default btn-blues" aria-label="Tìm">Tìm</button>
+                </div>
             </div>
-            <div class="col-lg-2 col-md-2 col-sm-2 col-12 fix-ipad">
-                <button class="hs-submit btn-style btn btn-default btn-blues" aria-label="Tìm">Tìm</button>
-            </div>
-        </div>
+        </form>
     </div>
 </div>
 <div class="container margin-bottom-15 padding-top-15">

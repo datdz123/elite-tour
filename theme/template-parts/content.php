@@ -1,46 +1,31 @@
-<?php
-/**
- * Template part for displaying posts
- *
- * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
- *
- * @package gnws
- */
+ <?php
 
-?>
+	$post_id = $post_item->ID;
+	$post_title = get_the_title($post_id);
+	$post_link = get_permalink($post_id);
+	$post_excerpt = get_the_excerpt($post_id);
+	$post_thumbnail = gnws_post_thumbnail_full($post_id, 'large');
 
-<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+	// Truncate excerpt if too long
+	if (strlen($post_excerpt) > 100) {
+		$post_excerpt = substr($post_excerpt, 0, 100) . '...';
+	}
+	?>
 
-	<header class="entry-header">
-		<?php
-		if ( is_sticky() && is_home() && ! is_paged() ) {
-			printf( '<span">%s</span>', esc_html_x( 'Featured', 'post', 'gnws' ) );
-		}
-		if ( is_singular() ) :
-			the_title( '<h1 class="entry-title">', '</h1>' );
-		else :
-			the_title( sprintf( '<h2 class="entry-title"><a href="%s" rel="bookmark">', esc_url( get_permalink() ) ), '</a></h2>' );
-		endif;
-		?>
-	</header><!-- .entry-header -->
-
-	<?php gnws_post_thumbnail(); ?>
-
-	<div <?php gnws_content_class( 'entry-content' ); ?>>
-		<?php
-		the_content();
-
-		wp_link_pages(
-			array(
-				'before' => '<div>' . __( 'Pages:', 'gnws' ),
-				'after'  => '</div>',
-			)
-		);
-		?>
-	</div><!-- .entry-content -->
-
-	<footer class="entry-footer">
-		<?php gnws_entry_footer(); ?>
-	</footer><!-- .entry-footer -->
-
-</article><!-- #post-${ID} -->
+ <div class="evo-item-blogs">
+ 	<div class="evo-article-image">
+ 		<a class="imgWrap pt_67 img--cover" href="<?php echo esc_url($post_link); ?>"
+ 			title="<?php echo esc_attr($post_title); ?>">
+ 			<span class="imgWrap-item">
+ 				<img style="opacity: 1;" src="<?php echo esc_url($post_thumbnail); ?>"
+ 					alt="<?php echo esc_attr($post_title); ?>"
+ 					class="img-responsive center-block">
+ 			</span>
+ 		</a>
+ 	</div>
+ 	<h3><a class="line-clamp" href="<?php echo esc_url($post_link); ?>"
+ 			title="<?php echo esc_attr($post_title); ?>"><?php echo esc_html($post_title); ?></a></h3>
+ 	<?php if ($post_excerpt): ?>
+ 		<p><?php echo esc_html($post_excerpt); ?></p>
+ 	<?php endif; ?>
+ </div>

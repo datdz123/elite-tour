@@ -25,7 +25,7 @@
             "label": "Khởi hành từ",
             "name": "departure_from",
             "aria-label": "",
-            "type": "select",
+            "type": "taxonomy",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
@@ -34,20 +34,17 @@
                 "class": "",
                 "id": ""
             },
-            "choices": {
-                "sai-gon": "Sài Gòn",
-                "ha-noi": "Hà Nội"
-            },
-            "default_value": false,
-            "return_format": "value",
+            "taxonomy": "taxonomy_khoi_hanh",
+            "add_term": 1,
+            "save_terms": 0,
+            "load_terms": 0,
+            "return_format": "id",
+            "field_type": "checkbox",
+            "allow_in_bindings": 0,
+            "bidirectional": 0,
             "multiple": 0,
             "allow_null": 0,
-            "allow_in_bindings": 0,
-            "ui": 0,
-            "ajax": 0,
-            "placeholder": "",
-            "create_options": 0,
-            "save_options": 0
+            "bidirectional_target": []
         },
         {
             "key": "field_697c83e3a0866",
@@ -462,5 +459,5 @@
     "description": "",
     "show_in_rest": 0,
     "display_title": "",
-    "modified": 1770079413
+    "modified": 1770105220
 }

@@ -306,27 +306,27 @@ function gnws_include_travel_service_in_search($query)
 add_action('pre_get_posts', 'gnws_include_travel_service_in_search');
 
 /**
- * Filter travel_service archive by departure_from and search keyword
+ * Filter travel_service search by departure_from taxonomy and search keyword
  */
 function gnws_filter_travel_service_archive($query)
 {
-	if (!is_admin() && $query->is_main_query() && is_post_type_archive('travel_service')) {
-		// Handle search keyword
-		$search = isset($_GET['s']) ? sanitize_text_field($_GET['s']) : '';
-		if (!empty($search)) {
-			$query->set('s', $search);
-		}
+	if (!is_admin() && $query->is_main_query()) {
+		// Only apply to search pages with travel_service post type
+		$post_type = isset($_GET['post_type']) ? sanitize_text_field($_GET['post_type']) : '';
 
-		// Handle departure_from filter
-		$departure_from = isset($_GET['departure_from']) ? sanitize_text_field($_GET['departure_from']) : '';
-		if (!empty($departure_from)) {
-			$meta_query = $query->get('meta_query') ?: array();
-			$meta_query[] = array(
-				'key' => 'departure_from',
-				'value' => $departure_from,
-				'compare' => '='
-			);
-			$query->set('meta_query', $meta_query);
+		if ($query->is_search() || $post_type === 'travel_service') {
+			// Handle departure_from filter (now using taxonomy)
+			$departure_from = isset($_GET['departure_from']) ? absint($_GET['departure_from']) : 0;
+
+			if ($departure_from > 0) {
+				$tax_query = $query->get('tax_query') ?: array();
+				$tax_query[] = array(
+					'taxonomy' => 'taxonomy_khoi_hanh',
+					'field' => 'term_id',
+					'terms' => $departure_from,
+				);
+				$query->set('tax_query', $tax_query);
+			}
 		}
 	}
 }

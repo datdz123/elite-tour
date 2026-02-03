@@ -46,6 +46,66 @@
 				<div class="col-lg-6 col-12">
 					<div class="topbar_list">
 						<?php
+						if (function_exists('pll_the_languages')) :
+							$languages = pll_the_languages(array('raw' => 1, 'hide_if_no_translation' => 0));
+							if ($languages) :
+								$current_lang = array_filter($languages, function ($l) {
+									return $l['current_lang'];
+								});
+								$current_lang = reset($current_lang);
+						?>
+								<div class="evo-lang-dropdown" style="position: relative; margin-right: 15px; display: inline-block;">
+									<div class="lang-show" style="cursor: pointer; display: flex; align-items: center; gap: 8px; color: #fff; font-size: 14px; padding: 5px 0;">
+										<?php if ($current_lang) : ?>
+											<img src="<?php echo esc_url($current_lang['flag']); ?>" alt="<?php echo esc_attr($current_lang['name']); ?>" style="width: 20px; height: auto; border-radius: 2px;">
+											<span><?php echo esc_html($current_lang['name']); ?></span>
+										<?php endif; ?>
+										<svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<path d="M1 1L5 5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+										</svg>
+									</div>
+									<ul class="lang-list" style="position: absolute; top: 100%; left: 0; background: #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.2); border-radius: 4px; padding: 5px 0; margin: 0; list-style: none; display: none; z-index: 10001; min-width: 140px;">
+										<?php foreach ($languages as $lang) : ?>
+											<li style="margin: 0;">
+												<a href="<?php echo esc_url($lang['url']); ?>" style="display: flex; align-items: center; gap: 10px; padding: 10px 15px; color: #333; text-decoration: none; font-size: 14px; transition: all 0.2s ease;">
+													<img src="<?php echo esc_url($lang['flag']); ?>" alt="<?php echo esc_attr($lang['name']); ?>" style="width: 20px; height: auto; border-radius: 2px;">
+													<span style="<?php echo $lang['current_lang'] ? 'font-weight: bold; color: #007bff;' : ''; ?>"><?php echo esc_html($lang['name']); ?></span>
+												</a>
+											</li>
+										<?php endforeach; ?>
+									</ul>
+								</div>
+								<style>
+									.evo-lang-dropdown:hover .lang-list {
+										display: block !important;
+									}
+
+									.evo-lang-dropdown .lang-list a:hover {
+										background: #f8f9fa;
+										color: #007bff !important;
+									}
+
+									@media (max-width: 991px) {
+										.evo-header-mobile {
+											display: flex !important;
+											align-items: center;
+											justify-content: space-between;
+										}
+
+										.evo-lang-mobile {
+											margin-left: auto;
+											margin-right: 15px;
+										}
+
+										.evo-lang-mobile .lang-list {
+											right: -10px;
+											left: auto;
+										}
+									}
+								</style>
+						<?php endif;
+						endif; ?>
+						<?php
 						$list_info = get_field('list_info', 'option');
 						if ($list_info):
 						?>
@@ -102,6 +162,40 @@
 
 							<?php endif; ?>
 						</a>
+						<div class="evo-lang-mobile d-lg-none">
+							<?php
+							if (function_exists('pll_the_languages')) :
+								$languages = pll_the_languages(array('raw' => 1, 'hide_if_no_translation' => 0));
+								if ($languages) :
+									$current_lang = array_filter($languages, function ($l) {
+										return $l['current_lang'];
+									});
+									$current_lang = reset($current_lang);
+							?>
+									<div class="evo-lang-dropdown" style="position: relative; display: inline-block;">
+										<div class="lang-show" style="cursor: pointer; display: flex; align-items: center; gap: 5px; color: #333; font-size: 13px; padding: 5px;">
+											<?php if ($current_lang) : ?>
+												<img src="<?php echo esc_url($current_lang['flag']); ?>" alt="<?php echo esc_attr($current_lang['name']); ?>" style="width: 18px; height: auto;">
+											<?php endif; ?>
+											<svg width="8" height="5" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+												<path d="M1 1L5 5L9 1" stroke="#333" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+											</svg>
+										</div>
+										<ul class="lang-list" style="position: absolute; top: 100%; right: 0; background: #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.1); border-radius: 4px; padding: 5px 0; margin: 0; list-style: none; display: none; z-index: 10001; min-width: 120px;">
+											<?php foreach ($languages as $lang) : ?>
+												<li>
+													<a href="<?php echo esc_url($lang['url']); ?>" style="display: flex; align-items: center; gap: 10px; padding: 8px 12px; color: #333; text-decoration: none; font-size: 13px;">
+														<img src="<?php echo esc_url($lang['flag']); ?>" alt="<?php echo esc_attr($lang['name']); ?>" style="width: 18px; height: auto;">
+														<span><?php echo esc_html($lang['name']); ?></span>
+													</a>
+												</li>
+											<?php endforeach; ?>
+										</ul>
+									</div>
+							<?php endif;
+							endif; ?>
+						</div>
+
 						<button type="button" class="evo-flexitem evo-flexitem-fill d-sm-inline-block d-lg-none"
 							id="trigger-mobile" aria-label="Menu Mobile">
 							<span class="icon-bar"></span>
@@ -444,3 +538,10 @@
 			</div>
 		</div>
 	</header>
+
+	<style>
+
+		header.header .evo-main-nav .evo-header-mobile #trigger-mobile{
+			margin-top: 0 !important;
+		}
+	</style>

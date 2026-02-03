@@ -66,43 +66,35 @@
             "new_lines": ""
         },
         {
-            "key": "field_697c2a3ba21a6",
-            "label": "Lựa chọn bài viết",
-            "name": "choose_post",
+            "key": "field_69816c48cc029",
+            "label": "Danh mục bài viết",
+            "name": "category_post",
             "aria-label": "",
-            "type": "relationship",
+            "type": "taxonomy",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "",
+                "width": "50",
                 "class": "",
                 "id": ""
             },
-            "post_type": [
-                "post"
-            ],
-            "post_status": [
-                "publish"
-            ],
-            "taxonomy": "",
-            "filters": [
-                "search",
-                "post_type",
-                "taxonomy"
-            ],
-            "return_format": "object",
-            "min": "",
-            "max": "",
+            "taxonomy": "category",
+            "add_term": 1,
+            "save_terms": 0,
+            "load_terms": 0,
+            "return_format": "id",
+            "field_type": "radio",
+            "allow_null": 0,
             "allow_in_bindings": 0,
-            "elements": "",
             "bidirectional": 0,
+            "multiple": 0,
             "bidirectional_target": []
         },
         {
-            "key": "field_697fa373e6fbf",
-            "label": "Tiêu đề nút",
-            "name": "title_btn",
+            "key": "field_697c2a3ba21a6",
+            "label": "Số lượng bài viết",
+            "name": "choose_post",
             "aria-label": "",
             "type": "text",
             "instructions": "",
@@ -121,16 +113,16 @@
             "append": ""
         },
         {
-            "key": "field_697fa37fe6fc0",
-            "label": "Đường dẫn nút",
-            "name": "link_btn",
+            "key": "field_697fa373e6fbf",
+            "label": "Tiêu đề nút",
+            "name": "title_btn",
             "aria-label": "",
             "type": "text",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "50",
+                "width": "100",
                 "class": "",
                 "id": ""
             },
@@ -161,5 +153,5 @@
     "description": "",
     "show_in_rest": 0,
     "display_title": "",
-    "modified": 1769972618
+    "modified": 1770090089
 }

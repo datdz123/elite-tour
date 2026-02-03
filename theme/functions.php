@@ -257,3 +257,264 @@ require get_template_directory() . '/inc/customizer-block.php';
 // add_action('admin_menu', function () {
 //     remove_submenu_page('themes.php', 'theme-editor.php');
 // }, 999);
+
+/**
+ * Remove parent slug from taxonomy_travel (for travel_service post type)
+ */
+add_filter('term_link', 'gnws_no_term_parents_taxonomy_travel', 1000, 3);
+function gnws_no_term_parents_taxonomy_travel($url, $term, $taxonomy)
+{
+	if ($taxonomy == 'taxonomy_travel') {
+		$term_nicename = $term->slug;
+		$url = trailingslashit(get_option('home')) . user_trailingslashit($term_nicename, 'category');
+	}
+	return $url;
+}
+
+
+
+// Add custom taxonomy_travel rewrite rules
+function gnws_no_taxonomy_travel_parents_rewrite_rules($flash = false)
+{
+	$terms = get_terms(array(
+		'taxonomy' => 'taxonomy_travel',
+		'hide_empty' => false,
+	));
+	if ($terms && !is_wp_error($terms)) {
+		foreach ($terms as $term) {
+			$term_slug = $term->slug;
+			add_rewrite_rule($term_slug . '/?$', 'index.php?taxonomy_travel=' . $term_slug, 'top');
+			add_rewrite_rule($term_slug . '/page/([0-9]{1,})/?$', 'index.php?taxonomy_travel=' . $term_slug . '&paged=$matches[1]', 'top');
+			add_rewrite_rule($term_slug . '/(?:feed/)?(feed|rdf|rss|rss2|atom)/?$', 'index.php?taxonomy_travel=' . $term_slug . '&feed=$matches[1]', 'top');
+		}
+	}
+	if ($flash == true)
+		flush_rewrite_rules(false);
+}
+add_action('init', 'gnws_no_taxonomy_travel_parents_rewrite_rules');
+
+/**
+ * Remove parent slug from taxonomy_khoi_hanh
+ */
+add_filter('term_link', 'gnws_no_term_parents_taxonomy_khoi_hanh', 1000, 3);
+function gnws_no_term_parents_taxonomy_khoi_hanh($url, $term, $taxonomy)
+{
+	if ($taxonomy == 'taxonomy_khoi_hanh') {
+		$term_nicename = $term->slug;
+		$url = trailingslashit(get_option('home')) . user_trailingslashit($term_nicename, 'category');
+	}
+	return $url;
+}
+
+// Add custom taxonomy_khoi_hanh rewrite rules
+function gnws_no_taxonomy_khoi_hanh_parents_rewrite_rules($flash = false)
+{
+	$terms = get_terms(array(
+		'taxonomy' => 'taxonomy_khoi_hanh',
+		'hide_empty' => false,
+	));
+	if ($terms && !is_wp_error($terms)) {
+		foreach ($terms as $term) {
+			$term_slug = $term->slug;
+			add_rewrite_rule($term_slug . '/?$', 'index.php?taxonomy_khoi_hanh=' . $term_slug, 'top');
+			add_rewrite_rule($term_slug . '/page/([0-9]{1,})/?$', 'index.php?taxonomy_khoi_hanh=' . $term_slug . '&paged=$matches[1]', 'top');
+			add_rewrite_rule($term_slug . '/(?:feed/)?(feed|rdf|rss|rss2|atom)/?$', 'index.php?taxonomy_khoi_hanh=' . $term_slug . '&feed=$matches[1]', 'top');
+		}
+	}
+	if ($flash == true)
+		flush_rewrite_rules(false);
+}
+add_action('init', 'gnws_no_taxonomy_khoi_hanh_parents_rewrite_rules');
+
+// Fix 404 when creating/editing/deleting taxonomy_khoi_hanh terms
+add_action('create_term', 'gnws_taxonomy_khoi_hanh_term_edit_success', 10, 3);
+add_action('edit_terms', 'gnws_taxonomy_khoi_hanh_term_edit_success', 10, 2);
+add_action('delete_term', 'gnws_taxonomy_khoi_hanh_term_edit_success', 10, 3);
+function gnws_taxonomy_khoi_hanh_term_edit_success($term_id, $tt_id_or_taxonomy = '', $taxonomy = '')
+{
+	$tax = is_string($tt_id_or_taxonomy) && !is_numeric($tt_id_or_taxonomy) ? $tt_id_or_taxonomy : $taxonomy;
+	if ($tax == 'taxonomy_khoi_hanh' || empty($tax)) {
+		gnws_no_taxonomy_khoi_hanh_parents_rewrite_rules(true);
+	}
+}
+
+
+
+
+// Fix 404 when creating/editing/deleting taxonomy_travel terms
+add_action('create_term', 'gnws_taxonomy_travel_term_edit_success', 10, 3);
+add_action('edit_terms', 'gnws_taxonomy_travel_term_edit_success', 10, 2);
+add_action('delete_term', 'gnws_taxonomy_travel_term_edit_success', 10, 3);
+function gnws_taxonomy_travel_term_edit_success($term_id, $tt_id_or_taxonomy = '', $taxonomy = '')
+{
+	// Handle different hook signatures
+	$tax = is_string($tt_id_or_taxonomy) && !is_numeric($tt_id_or_taxonomy) ? $tt_id_or_taxonomy : $taxonomy;
+	if ($tax == 'taxonomy_travel' || empty($tax)) {
+		gnws_no_taxonomy_travel_parents_rewrite_rules(true);
+	}
+}
+
+/**
+ * Remove parent slug from category (for post)
+ */
+add_filter('term_link', 'gnws_no_term_parents_category', 1000, 3);
+function gnws_no_term_parents_category($url, $term, $taxonomy)
+{
+	if ($taxonomy == 'category') {
+		$term_nicename = $term->slug;
+		$url = trailingslashit(get_option('home')) . user_trailingslashit($term_nicename, 'category');
+	}
+	return $url;
+}
+
+// Add custom category rewrite rules
+function gnws_no_category_parents_rewrite_rules($flash = false)
+{
+	$terms = get_terms(array(
+		'taxonomy' => 'category',
+		'hide_empty' => false,
+	));
+	if ($terms && !is_wp_error($terms)) {
+		foreach ($terms as $term) {
+			$term_slug = $term->slug;
+			add_rewrite_rule($term_slug . '/?$', 'index.php?category_name=' . $term_slug, 'top');
+			add_rewrite_rule($term_slug . '/page/([0-9]{1,})/?$', 'index.php?category_name=' . $term_slug . '&paged=$matches[1]', 'top');
+			add_rewrite_rule($term_slug . '/(?:feed/)?(feed|rdf|rss|rss2|atom)/?$', 'index.php?category_name=' . $term_slug . '&feed=$matches[1]', 'top');
+		}
+	}
+	if ($flash == true)
+		flush_rewrite_rules(false);
+}
+add_action('init', 'gnws_no_category_parents_rewrite_rules');
+
+// Fix 404 when creating/editing/deleting category terms
+add_action('create_term', 'gnws_category_term_edit_success', 10, 3);
+add_action('edit_terms', 'gnws_category_term_edit_success', 10, 2);
+add_action('delete_term', 'gnws_category_term_edit_success', 10, 3);
+function gnws_category_term_edit_success($term_id, $tt_id_or_taxonomy = '', $taxonomy = '')
+{
+	// Handle different hook signatures
+	$tax = is_string($tt_id_or_taxonomy) && !is_numeric($tt_id_or_taxonomy) ? $tt_id_or_taxonomy : $taxonomy;
+	if ($tax == 'category' || empty($tax)) {
+		gnws_no_category_parents_rewrite_rules(true);
+	}
+}
+
+/**
+ * Remove 'travel_service' slug from travel_service post type URLs
+ */
+add_filter('post_type_link', 'gnws_remove_travel_service_slug', 10, 2);
+function gnws_remove_travel_service_slug($post_link, $post)
+{
+	if ($post->post_type === 'travel_service' && $post->post_status === 'publish') {
+		$post_link = home_url('/' . $post->post_name . '/');
+	}
+	return $post_link;
+}
+
+// Add rewrite rules for travel_service posts
+function gnws_travel_service_rewrite_rules($flash = false)
+{
+	$posts = get_posts(array(
+		'post_type' => 'travel_service',
+		'post_status' => 'publish',
+		'posts_per_page' => -1,
+		'fields' => 'ids',
+	));
+
+	if ($posts && !empty($posts)) {
+		foreach ($posts as $post_id) {
+			$post_slug = get_post_field('post_name', $post_id);
+			if ($post_slug) {
+				add_rewrite_rule(
+					$post_slug . '/?$',
+					'index.php?travel_service=' . $post_slug,
+					'top'
+				);
+			}
+		}
+	}
+
+	if ($flash == true) {
+		flush_rewrite_rules(false);
+	}
+}
+add_action('init', 'gnws_travel_service_rewrite_rules');
+
+// Flush rewrite rules when travel_service post is saved/updated/deleted
+add_action('save_post_travel_service', 'gnws_travel_service_flush_rules', 10, 1);
+add_action('delete_post', 'gnws_travel_service_delete_flush_rules', 10, 1);
+
+function gnws_travel_service_flush_rules($post_id)
+{
+	if (wp_is_post_autosave($post_id) || wp_is_post_revision($post_id)) {
+		return;
+	}
+	gnws_travel_service_rewrite_rules(true);
+}
+
+function gnws_travel_service_delete_flush_rules($post_id)
+{
+	if (get_post_type($post_id) === 'travel_service') {
+		gnws_travel_service_rewrite_rules(true);
+	}
+}
+
+/**
+ * Remove 'galley_img' slug from galley_img post type URLs
+ */
+add_filter('post_type_link', 'gnws_remove_galley_img_slug', 10, 2);
+function gnws_remove_galley_img_slug($post_link, $post)
+{
+	if ($post->post_type === 'galley_img' && $post->post_status === 'publish') {
+		$post_link = home_url('/' . $post->post_name . '/');
+	}
+	return $post_link;
+}
+
+// Add rewrite rules for galley_img posts
+function gnws_galley_img_rewrite_rules($flash = false)
+{
+	$posts = get_posts(array(
+		'post_type' => 'galley_img',
+		'post_status' => 'publish',
+		'posts_per_page' => -1,
+		'fields' => 'ids',
+	));
+
+	if ($posts && !empty($posts)) {
+		foreach ($posts as $post_id) {
+			$post_slug = get_post_field('post_name', $post_id);
+			if ($post_slug) {
+				add_rewrite_rule(
+					$post_slug . '/?$',
+					'index.php?galley_img=' . $post_slug,
+					'top'
+				);
+			}
+		}
+	}
+
+	if ($flash == true) {
+		flush_rewrite_rules(false);
+	}
+}
+add_action('init', 'gnws_galley_img_rewrite_rules');
+
+// Flush rewrite rules when galley_img post is saved/updated/deleted
+add_action('save_post_galley_img', 'gnws_galley_img_flush_rules', 10, 1);
+
+function gnws_galley_img_flush_rules($post_id)
+{
+	if (wp_is_post_autosave($post_id) || wp_is_post_revision($post_id)) {
+		return;
+	}
+	gnws_galley_img_rewrite_rules(true);
+}
+
+// Extend delete flush to handle galley_img
+add_action('delete_post', function ($post_id) {
+	if (get_post_type($post_id) === 'galley_img') {
+		gnws_galley_img_rewrite_rules(true);
+	}
+}, 10, 1);

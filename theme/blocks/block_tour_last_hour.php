@@ -21,9 +21,34 @@ if (!empty($block['className'])) {
 $hide_block = get_field('hide_block');
 $list_title = get_field('list_title');
 $description = get_field('description');
-$choose_tour = get_field('choose_tour');
+$choose_tour = get_field('choose_tour'); // Taxonomy term ID(s)
+$number_post = get_field('number_post') ?: 8;
 $title_btn = get_field('title_btn');
-$link_btn = get_field('link_btn');
+
+$link_btn = '';
+if ($choose_tour) {
+    $term_id = is_array($choose_tour) ? $choose_tour[0] : $choose_tour;
+    $link_btn = get_term_link((int)$term_id, 'taxonomy_travel');
+}
+
+// Get tours based on selected taxonomy
+$args = array(
+    'post_type'      => 'travel_service',
+    'posts_per_page' => $number_post,
+    'post_status'    => 'publish',
+);
+
+if ($choose_tour) {
+    $args['tax_query'] = array(
+        array(
+            'taxonomy' => 'taxonomy_travel',
+            'field'    => 'term_id',
+            'terms'    => $choose_tour,
+        ),
+    );
+}
+
+$query = new WP_Query($args);
 ?>
 
 <?php
@@ -39,7 +64,7 @@ if (!empty($block['data']['preview_image_help']) && !empty($is_preview)): ?>
                 <div class="col-lg-12">
                     <div class="section_tour_last_hour_title">
                         <h2>
-                            <?php if ($link_btn): ?>
+                            <?php if ($link_btn && !is_wp_error($link_btn)): ?>
                                 <a href="<?php echo esc_url($link_btn); ?>" title="<?php echo esc_attr(strip_tags(implode(' ', array_column($list_title ?: [], 'title_highlight')))); ?>">
                                 <?php else: ?>
                                     <a href="tour" title="Tour ưu đãi Giá tốt">
@@ -59,13 +84,12 @@ if (!empty($block['data']['preview_image_help']) && !empty($is_preview)): ?>
                         <p><?php echo $description ? esc_html($description) : 'Cùng Elite Tour điểm qua các địa điểm du lịch trong nước và ngoài nước thu hút du khách nhất nhé!'; ?></p>
                     </div>
                     <div class="row evo-tour-scroll">
-                        <?php if ($choose_tour && is_array($choose_tour)): ?>
-                            <?php foreach ($choose_tour as $tour_post): ?>
+                        <?php if ($query->have_posts()): ?>
+                            <?php while ($query->have_posts()): $query->the_post(); ?>
                                 <?php
-                                // Get tour data
-                                $tour_id = $tour_post->ID;
-                                $tour_title = get_the_title($tour_id);
-                                $tour_link = get_permalink($tour_id);
+                                $tour_id = get_the_ID();
+                                $tour_title = get_the_title();
+                                $tour_link = get_permalink();
                                 $tour_thumbnail = get_the_post_thumbnail_url($tour_id, 'large') ?: 'https://via.placeholder.com/400x300';
 
                                 // Get tour meta from ACF fields
@@ -151,6 +175,8 @@ if (!empty($block['data']['preview_image_help']) && !empty($is_preview)): ?>
                                                         <?php endif; ?>
                                                     <?php elseif ($tour_price_original > 0): ?>
                                                         <?php echo number_format($tour_price_original, 0, ',', '.'); ?>₫
+                                                    <?php else: ?>
+                                                        <?php _e('Liên hệ', 'gnws'); ?>
                                                     <?php endif; ?>
 
                                                 </div>
@@ -162,14 +188,14 @@ if (!empty($block['data']['preview_image_help']) && !empty($is_preview)): ?>
                                         </div>
                                     </div>
                                 </div>
-                            <?php endforeach; ?>
-
+                            <?php endwhile;
+                            wp_reset_postdata(); ?>
                         <?php endif; ?>
                     </div>
-                    <?php if(get_field("title_btn") && get_field("link_btn")): ?>
-                    <div class="evo-index-tour-more">
-					<a href="<?php echo get_field("link_btn"); ?>" title="<?php echo get_field("title_btn"); ?>"><?php echo get_field("title_btn"); ?></a>
-				</div>
+                    <?php if ($title_btn && $link_btn && !is_wp_error($link_btn)): ?>
+                        <div class="evo-index-tour-more">
+                            <a href="<?php echo esc_url($link_btn); ?>" title="<?php echo esc_attr($title_btn); ?>"><?php echo esc_html($title_btn); ?></a>
+                        </div>
                     <?php endif; ?>
                 </div>
             </div>

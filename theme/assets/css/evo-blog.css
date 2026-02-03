@@ -611,3 +611,20 @@
 .aside-item.top-news .item .info .title a:hover,.aside-item.top-news .item .info .title a:focus {
     color: #1a3863
 }
+
+input.wpcf7-form-control.wpcf7-submit.has-spinner.btn.btn-default{
+    background-color: #000;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    height: 40px;
+    line-height: 40px;
+    padding: 0 15px;
+    -webkit-transition: 0.5s;
+    transition: 0.5s;
+    font-size: 14px;
+    font-weight: 600;
+    z-index: 99;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}

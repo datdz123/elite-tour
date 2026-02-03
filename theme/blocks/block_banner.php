@@ -60,7 +60,7 @@ if (empty($img) && empty($title_banner)): ?>
 						<source media="(min-width: 569px)" srcset="<?php echo esc_url($img_url); ?>">
 						<source media="(min-width: 480px)" srcset="<?php echo esc_url($img_url); ?>">
 						<img src="<?php echo esc_url($img_url); ?>" alt="<?php echo esc_attr($img_alt); ?>"
-							class="lazy img-responsive mx-auto d-block">
+							class="lazy img-responsive  d-block mx-auto">
 					</picture>
 				</a>
 			<?php else: ?>
@@ -130,16 +130,26 @@ if (empty($img) && empty($title_banner)): ?>
 										<div class="group-search-content">
 											<p>Khởi hành từ</p>
 											<select name="departure_from" class="tag-select">
-												<option value="">Tất cả</option>
+												<option value=""><?php _e('Tất cả', 'gnws'); ?></option>
 												<?php
-$field_object = acf_get_field('departure_from');
+												$field_object = acf_get_field('departure_from');
+												$taxonomy_name = 'taxonomy_khoi_hanh'; // Fallback taxonomy
 
-if ($field_object && !empty($field_object['choices'])) {
-    foreach ($field_object['choices'] as $value => $label) {
-        echo '<option value="' . esc_attr($value) . '">' . esc_html($label) . '</option>';
-    }
-}
-?>
+												if ($field_object && !empty($field_object['taxonomy'])) {
+													$taxonomy_name = $field_object['taxonomy'];
+												}
+
+												$terms = get_terms(array(
+													'taxonomy' => $taxonomy_name,
+													'hide_empty' => false,
+												));
+
+												if (!is_wp_error($terms) && !empty($terms)) {
+													foreach ($terms as $term) {
+														echo '<option value="' . esc_attr($term->term_id) . '">' . esc_html($term->name) . '</option>';
+													}
+												}
+												?>
 
 											</select>
 										</div>

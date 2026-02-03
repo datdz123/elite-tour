@@ -215,24 +215,7 @@ get_header();
                 </section>
 
 
-                <script>
-                    jQuery(document).ready(function($) {
-                        $('.page_appear_listitem').click(function() {
-                            if ($(this).hasClass('active')) {
-                                $(this).removeClass('active');
-                                $(this).find('.pane').slideUp(100);
-                            } else {
-
-                                $('.page_appear_listitem .pane').slideUp();
-                                $('.page_appear_listitem h3 i').removeClass('fa-minus').addClass('fa-plus');
-                                $('.page_appear_listitem .pane')
-                                $('.page_appear_listitem').removeClass('active');
-                                $(this).addClass('active');
-                                $(this).find('.pane').slideDown(100);
-                            }
-                        });
-                    });
-                </script>
+             
                 <?php
                 // Get tour price for booking section - display exactly as entered in ACF
                 $booking_tour_price = isset($tour_price) ? $tour_price : get_field('tour_price');
@@ -306,7 +289,7 @@ get_header();
                         </div>
                         <div class="alert alert-warning alert-dismissible margin-top-20" role="alert">
                             <button type="button" class="close" data-dismiss="alert" aria-label="<?php _e('Đóng', 'gnws'); ?>"><span aria-hidden="true">×</span></button>
-                            <?php printf(__('Vui lòng liên hệ %s để đặt Tour.', 'gnws'), '<strong><a href="tel:02435642888">024 3564 2888</a></strong>'); ?>
+                            <?php printf(__('Vui lòng liên hệ để đặt tour', 'gnws')); ?>
                         </div>
                         <script>
                             jQuery(function($) {

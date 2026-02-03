@@ -635,3 +635,10 @@ label {
         padding-right: 80px
     }
 }
+
+header .nav-item.has-childs>a>svg {
+    margin-left: 2px;
+}
+.rank-math-breadcrumb p{
+    margin:0;
+}

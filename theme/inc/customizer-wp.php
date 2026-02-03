@@ -136,6 +136,7 @@ if ( ! function_exists( 'gnws_css_admin' ) ) :
 	add_action( 'admin_enqueue_scripts', 'gnws_css_admin' );
 	function gnws_css_admin() {
 		wp_enqueue_style( 'admin_css', get_template_directory_uri() . '/admin/admin.css' );
+		wp_enqueue_style( 'admin_css2', get_template_directory_uri());
 	}
 endif;
 //CSS Login
@@ -143,6 +144,7 @@ if ( ! function_exists( 'gnws_css_admin_login' ) ) :
 	add_action( 'login_enqueue_scripts', 'gnws_css_admin_login' );
 	function gnws_css_admin_login() {
 		wp_enqueue_style( 'admin_login_css', get_template_directory_uri() . '/admin/login.css' );
+
 	}
 endif;
 

@@ -17,9 +17,16 @@ $search_query = get_search_query();
 $paged = get_query_var('paged') ? absint(get_query_var('paged')) : 1;
 $posts_per_page = 12;
 
-// Create query for both posts and travel_service
+// Get post_type from URL parameter, default to both if not specified
+$requested_post_type = isset($_GET['post_type']) ? sanitize_text_field($_GET['post_type']) : '';
+$post_types = !empty($requested_post_type) ? $requested_post_type : array('post', 'travel_service');
+
+// Get departure_from filter (taxonomy)
+$departure_from = isset($_GET['departure_from']) ? absint($_GET['departure_from']) : 0;
+
+// Create query for the requested post type(s)
 $search_args = array(
-	'post_type' => array('post', 'travel_service'),
+	'post_type' => $post_types,
 	'post_status' => 'publish',
 	'posts_per_page' => $posts_per_page,
 	'paged' => $paged,
@@ -27,6 +34,17 @@ $search_args = array(
 	'orderby' => 'relevance',
 	'order' => 'DESC'
 );
+
+// Add tax_query if departure_from is selected
+if ($departure_from > 0) {
+	$search_args['tax_query'] = array(
+		array(
+			'taxonomy' => 'taxonomy_khoi_hanh',
+			'field' => 'term_id',
+			'terms' => $departure_from,
+		),
+	);
+}
 
 $search_results = new WP_Query($search_args);
 $total_results = $search_results->found_posts;
@@ -44,7 +62,9 @@ $max_pages = $search_results->max_num_pages;
 			<div class="col-12">
 				<div class="section margin-bottom-20">
 					<form action="<?php echo esc_url(home_url('/')); ?>" method="get" class="blog-search-form input-group search-bar has-validation-callback" role="search">
-						<input type="hidden" name="post_type" value="travel_service">
+						<?php if (!empty($requested_post_type)) : ?>
+							<input type="hidden" name="post_type" value="<?php echo esc_attr($requested_post_type); ?>">
+						<?php endif; ?>
 						<input type="text" name="s" required value="<?php echo esc_attr($search_query); ?>" class="input-group-field auto-search search-auto form-control" placeholder="Tìm kiếm..." autocomplete="off">
 						<button type="submit" class="btn icon-fallback-text" aria-label="Tìm kiếm" title="Tìm kiếm">
 							<svg width="20" height="20" viewBox="0 0 20 20" fill="#ffffff" xmlns="http://www.w3.org/2000/svg">
@@ -83,55 +103,7 @@ $max_pages = $search_results->max_num_pages;
 							?>
 
 								<div class="col-12 col-sm-6 col-md-4 col-lg-3 col-fix">
-									<div class="evo-product-block-item">
-										<div class="img-tour">
-											<a class="imgWrap pt_67 img--cover" href="<?php echo esc_url($permalink); ?>"
-												title="<?php echo esc_attr($title); ?>">
-												<span class="imgWrap-item">
-													<img class="lazy loaded"
-														src="<?php echo esc_url($thumbnail); ?>"
-														data-src="<?php echo esc_url($thumbnail); ?>"
-														alt="<?php echo esc_attr($title); ?>" data-was-processed="true">
-												</span>
-											</a>
-											<?php if ($post_type === 'travel_service') :
-												$tour_price = get_field('tour_price', get_the_ID());
-												$tour_price_old = get_field('tour_price_old', get_the_ID());
-												if ($tour_price && $tour_price_old && $tour_price_old > $tour_price) :
-													$discount = round((($tour_price_old - $tour_price) / $tour_price_old) * 100);
-											?>
-													<span class="smart">- <?php echo $discount; ?>% </span>
-											<?php endif;
-											endif; ?>
-										</div>
-										<div class="info-tour clearfix">
-											<h3>
-												<a href="<?php echo esc_url($permalink); ?>" title="<?php echo esc_attr($title); ?>">
-													<?php echo esc_html($title); ?>
-												</a>
-											</h3>
-
-											<?php if ($post_type === 'travel_service') :
-												$tour_price = get_field('tour_price', get_the_ID());
-												$tour_price_old = get_field('tour_price_old', get_the_ID());
-											?>
-												<div class="action-box">
-													<div class="price-box">
-														<?php if ($tour_price) : ?>
-															<?php echo number_format($tour_price, 0, ',', '.'); ?>₫
-															<?php if ($tour_price_old && $tour_price_old > $tour_price) : ?>
-																<span class="compare-price"><?php echo number_format($tour_price_old, 0, ',', '.'); ?>₫</span>
-															<?php endif; ?>
-														<?php else : ?>
-															Liên hệ
-														<?php endif; ?>
-													</div>
-												</div>
-											<?php else : ?>
-												<p class="search-excerpt"><?php echo excerpt(15); ?></p>
-											<?php endif; ?>
-										</div>
-									</div>
+									<?php get_template_part('template-parts/content', get_post_type()); ?>
 								</div>
 							<?php endwhile; ?>
 						</div>

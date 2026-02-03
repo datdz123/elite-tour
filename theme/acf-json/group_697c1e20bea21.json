@@ -117,39 +117,31 @@
             "label": "Lựa chọn tour",
             "name": "choose_tour",
             "aria-label": "",
-            "type": "relationship",
+            "type": "taxonomy",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "",
+                "width": "50",
                 "class": "",
                 "id": ""
             },
-            "post_type": [
-                "travel_service"
-            ],
-            "post_status": [
-                "publish"
-            ],
-            "taxonomy": "",
-            "filters": [
-                "search",
-                "post_type",
-                "taxonomy"
-            ],
-            "return_format": "object",
-            "min": "",
-            "max": "",
+            "taxonomy": "taxonomy_travel",
+            "add_term": 1,
+            "save_terms": 0,
+            "load_terms": 0,
+            "return_format": "id",
+            "field_type": "checkbox",
             "allow_in_bindings": 0,
-            "elements": "",
             "bidirectional": 0,
+            "multiple": 0,
+            "allow_null": 0,
             "bidirectional_target": []
         },
         {
-            "key": "field_697c26b2a4c88",
-            "label": "Tiêu đề nút",
-            "name": "title_btn",
+            "key": "field_6981b1b6148f9",
+            "label": "Số lượng tour",
+            "name": "number_post",
             "aria-label": "",
             "type": "text",
             "instructions": "",
@@ -168,16 +160,16 @@
             "append": ""
         },
         {
-            "key": "field_697c26d7a4c89",
-            "label": "Đường dẫn nút",
-            "name": "link_btn",
+            "key": "field_697c26b2a4c88",
+            "label": "Tiêu đề nút",
+            "name": "title_btn",
             "aria-label": "",
             "type": "text",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "50",
+                "width": "",
                 "class": "",
                 "id": ""
             },
@@ -208,5 +200,5 @@
     "description": "",
     "show_in_rest": 0,
     "display_title": "",
-    "modified": 1769744097
+    "modified": 1770107375
 }

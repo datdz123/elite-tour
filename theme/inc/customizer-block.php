@@ -185,5 +185,25 @@ function my_acf_init_block_types()
 			)
 			
 		));
+
+			acf_register_block_type(array(
+			'name' => 'block_thu_vien_anh',
+			'title' => ('[Block] Thư viện ảnh'),
+			'description' => ('block_thu_vien_anh'),
+			'render_template' => 'blocks/block_thu_vien_anh.php',
+			'keywords' => array('block_thu_vien_anh'),
+			'supports' => array(
+				'anchor' => true,
+			),
+			
+			'example' => array(
+				'attributes' => array(
+					'mode' => 'preview',
+					'data' => array(
+						'preview_image_help' => get_stylesheet_directory_uri() . '/assets/preview/block_thu_vien_anh.png',
+					)
+				)
+			)
+		));
 	}
 }

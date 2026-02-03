@@ -57,7 +57,7 @@ if (!empty($block['data']['preview_image_help']) && !empty($is_preview)): ?>
                                 $post_title = get_the_title($post_id);
                                 $post_link = get_permalink($post_id);
                                 $post_excerpt = get_the_excerpt($post_id);
-                                $post_thumbnail = get_the_post_thumbnail_url($post_id, 'large') ?: get_template_directory_uri() . '/assets/images/placeholder.jpg';
+                                $post_thumbnail = gnws_post_thumbnail_full($post_id, 'large');
 
                                 // Truncate excerpt if too long
                                 if (strlen($post_excerpt) > 100) {
@@ -84,14 +84,14 @@ if (!empty($block['data']['preview_image_help']) && !empty($is_preview)): ?>
                             <?php endforeach; ?>
                         </div>
                     <?php endif; ?>
-                    <?php if(get_field('title_btn') && get_field('link_btn')): ?>
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="evo-index-tour-more">
-                                <a href="<?php echo esc_url(get_field('link_btn')); ?>" title="<?php echo esc_attr(get_field('title_btn')); ?>"><?php echo esc_html(get_field('title_btn')); ?></a>
+                    <?php if (get_field('title_btn') && get_field('link_btn')): ?>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="evo-index-tour-more">
+                                    <a href="<?php echo esc_url(get_field('link_btn')); ?>" title="<?php echo esc_attr(get_field('title_btn')); ?>"><?php echo esc_html(get_field('title_btn')); ?></a>
+                                </div>
                             </div>
                         </div>
-                    </div>
                     <?php endif; ?>
                 </div>
             </div>

@@ -98,52 +98,63 @@ if (empty($img) && empty($title_banner)): ?>
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="evo-main-search">
-						<div class="row">
-							<div class="col-lg-12 col-md-12 col-sm-12 col-12">
-								<div class="input_group group_a">
-									<img src="images/place-localizer.svg" alt="Địa điểm">
-									<input type="text" aria-label="Bạn muốn đi đâu?" autocomplete="off"
-										placeholder="Bạn muốn đi đâu?" id="name"
-										class="form-control form-hai form-control-lg">
-								</div>
-							</div>
-							<div class="col-lg-5 col-md-5 col-sm-5 col-12 fix-ipad1">
-								<div class="group-search abs">
-									<div class="group-search-icon">
-										<img src="images/date.svg" alt="Tìm kiếm">
-									</div>
-									<div class="group-search-content">
-										<p>Ngày khởi hành</p>
-										<input class="tourmaster-datepicker" id="dates" type="text"
-											placeholder="Chọn Ngày khởi hành" data-date-format="dd MM yyyy"
-											readonly="readonly">
+						<form id="banner-tour-search" action="<?php echo esc_url(home_url('/')); ?>" method="get">
+							<input type="hidden" name="post_type" value="travel_service">
+							<div class="row">
+								<div class="col-lg-12 col-md-12 col-sm-12 col-12">
+									<div class="input_group group_a">
+										<img src="<?php echo get_template_directory_uri(); ?>/assets/images/place-localizer.svg" alt="Địa điểm">
+										<input type="text" aria-label="Bạn muốn đi đâu?" autocomplete="off"
+											placeholder="Bạn muốn đi đâu?" name="s" id="banner-search-keyword"
+											class="form-control form-hai form-control-lg">
 									</div>
 								</div>
-							</div>
-							<div class="col-lg-5 col-md-5 col-sm-5 col-12 fix-ipad2">
-								<div class="group-search ab">
-									<div class="group-search-icon">
-										<img src="images/paper-plane.svg" alt="Tìm kiếm">
-									</div>
-									<div class="group-search-content">
-										<p>Khởi hành từ</p>
-										<select name="garden" class="tag-select" required="">
-											<option value="">Tất cả</option>
-											<option value="product_type:('Sài Gòn')">Sài Gòn</option>
-											<option value="product_type:('Hà Nội')">Hà Nội</option>
-										</select>
+								<div class="col-lg-5 col-md-5 col-sm-5 col-12 fix-ipad1">
+									<div class="group-search abs">
+										<div class="group-search-icon">
+											<img src="<?php echo get_template_directory_uri(); ?>/assets/images/date.svg" alt="Tìm kiếm">
+										</div>
+										<div class="group-search-content">
+											<p>Ngày khởi hành</p>
+											<input class="tourmaster-datepicker" id="dates" type="text"
+												placeholder="Chọn Ngày khởi hành" data-date-format="dd MM yyyy"
+												readonly="readonly">
+										</div>
 									</div>
 								</div>
+								<div class="col-lg-5 col-md-5 col-sm-5 col-12 fix-ipad2">
+									<div class="group-search ab">
+										<div class="group-search-icon">
+											<img src="<?php echo get_template_directory_uri(); ?>/assets/images/paper-plane.svg" alt="Tìm kiếm">
+										</div>
+										<div class="group-search-content">
+											<p>Khởi hành từ</p>
+											<select name="departure_from" class="tag-select">
+												<option value="">Tất cả</option>
+												<?php
+$field_object = acf_get_field('departure_from');
+
+if ($field_object && !empty($field_object['choices'])) {
+    foreach ($field_object['choices'] as $value => $label) {
+        echo '<option value="' . esc_attr($value) . '">' . esc_html($label) . '</option>';
+    }
+}
+?>
+
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="col-lg-2 col-md-2 col-sm-2 col-12 fix-ipad">
+									<button type="submit" class="hs-submit btn-style btn btn-default btn-blues"
+										aria-label="Tìm">Tìm</button>
+								</div>
 							</div>
-							<div class="col-lg-2 col-md-2 col-sm-2 col-12 fix-ipad">
-								<button class="hs-submit btn-style btn btn-default btn-blues"
-									aria-label="Tìm">Tìm</button>
-							</div>
-						</div>
+						</form>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	
+
 </section>

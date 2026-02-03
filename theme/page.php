@@ -17,7 +17,7 @@ get_header();
 <main>
 	<?php the_content() ?>
 </main>
-<h1 class="hidden">
+<h1 class="hidden d-none">
 	<?php echo wp_get_document_title(); ?>
 </h1>
 

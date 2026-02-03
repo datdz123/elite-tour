@@ -3,7 +3,46 @@
     "title": "Cài đặt bài viết",
     "fields": [
         {
-            "key": "field_697c7352648db",
+            "key": "field_697c73ff648e0",
+            "label": "Bài viết nổi bật",
+            "name": "feature_post",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 0,
+            "allow_in_bindings": 0,
+            "ui_on_text": "",
+            "ui_off_text": "",
+            "ui": 1
+        },
+        {
+            "key": "field_6980788662fa6",
+            "label": "Đặt Tour",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_6980789c62fa7",
             "label": "Icon",
             "name": "icon",
             "aria-label": "",
@@ -16,7 +55,7 @@
                 "class": "",
                 "id": ""
             },
-            "return_format": "id",
+            "return_format": "array",
             "library": "all",
             "min_width": "",
             "min_height": "",
@@ -29,7 +68,7 @@
             "preview_size": "medium"
         },
         {
-            "key": "field_697c6dfc648da",
+            "key": "field_698078ab62fa8",
             "label": "Tiêu đề",
             "name": "title",
             "aria-label": "",
@@ -50,11 +89,11 @@
             "append": ""
         },
         {
-            "key": "field_697c7372648dc",
+            "key": "field_698078b762fa9",
             "label": "Mô tả",
             "name": "description",
             "aria-label": "",
-            "type": "textarea",
+            "type": "wysiwyg",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
@@ -64,15 +103,15 @@
                 "id": ""
             },
             "default_value": "",
-            "maxlength": "",
             "allow_in_bindings": 0,
-            "rows": "",
-            "placeholder": "",
-            "new_lines": ""
+            "tabs": "all",
+            "toolbar": "full",
+            "media_upload": 1,
+            "delay": 0
         },
         {
-            "key": "field_697c73d1648de",
-            "label": "Icon Nút",
+            "key": "field_698078f262fab",
+            "label": "Icon nút",
             "name": "icon_btn",
             "aria-label": "",
             "type": "image",
@@ -97,7 +136,7 @@
             "preview_size": "medium"
         },
         {
-            "key": "field_697c73c8648dd",
+            "key": "field_698078e762faa",
             "label": "Tiêu đề nút",
             "name": "title_btn",
             "aria-label": "",
@@ -118,7 +157,7 @@
             "append": ""
         },
         {
-            "key": "field_697c73de648df",
+            "key": "field_6980790362fac",
             "label": "Đường dẫn nút",
             "name": "link_btn",
             "aria-label": "",
@@ -139,7 +178,7 @@
             "append": ""
         },
         {
-            "key": "field_697c73ff648e0",
+            "key": "field_6980791262fad",
             "label": "Hotline",
             "name": "hotline",
             "aria-label": "",
@@ -179,5 +218,5 @@
     "description": "",
     "show_in_rest": 0,
     "display_title": "",
-    "modified": 1769763905
+    "modified": 1770027298
 }

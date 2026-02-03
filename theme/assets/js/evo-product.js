@@ -1,3 +1,4 @@
+jQuery(function ($) {
 $('.evo-owl-product').slick({
     dots: false,
     arrows: true,
@@ -360,4 +361,5 @@ $(document).ready(function () {
         minDate: dateToday,
         beforeShowDay: DisableMonday
     });
+});
 });

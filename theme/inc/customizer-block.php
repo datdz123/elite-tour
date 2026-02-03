@@ -132,5 +132,58 @@ function my_acf_init_block_types()
 				)
 			)
 		));
+
+
+		acf_register_block_type(array(
+			'name' => 'block_faq',
+			'title' => ('[Block] FAQ'),
+			'description' => ('block_faq'),
+			'render_template' => 'blocks/block_faq.php',
+			'keywords' => array('block_faq'),
+			'supports' => array(
+				'anchor' => true,
+			),
+			'api_version' => 3,
+			'acf_block_version' => 3,
+			'example' => array(
+				'attributes' => array(
+					'mode' => 'preview',
+					'data' => array(
+						'preview_image_help' => get_stylesheet_directory_uri() . '/assets/preview/block_faq.png',
+					)
+				)
+			)
+		));
+		acf_register_block_type(array(
+			'name' => 'block_intro',
+			'title' => ('[Block] Intro'),
+			'description' => ('block_intro'),
+			'render_template' => 'blocks/block_intro.php',
+			'keywords' => array('block_intro'),
+			'supports' => array(
+				'anchor' => true,
+			),
+			'api_version' => 3,
+			'acf_block_version' => 3,
+			'example' => array(
+				'attributes' => array(
+					'mode' => 'preview',
+					'data' => array(
+						'preview_image_help' => get_stylesheet_directory_uri() . '/assets/preview/block_intro.png',
+					)
+				)
+			)
+		));
+		acf_register_block_type(array(
+			'name' => 'block_breadcrumb',
+			'title' => ('[Block] Breadcrumb'),
+			'description' => ('block_breadcrumb'),
+			'render_template' => 'blocks/block_breadcrumb.php',
+			'keywords' => array('block_breadcrumb'),
+			'supports' => array(
+				'anchor' => true,
+			)
+			
+		));
 	}
 }

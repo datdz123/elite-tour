@@ -171,29 +171,38 @@ function gnws_scripts()
 	}
 
 	// CSS Files
+	// wp_enqueue_style('gnws-style', get_stylesheet_uri(), array(), GNWS_VERSION);
 	wp_enqueue_style('gnws-bootstrap', get_template_directory_uri() . '/assets/css/bootstrapmin.css', array(), GNWS_VERSION);
 	wp_enqueue_style('gnws-font-awesome', get_template_directory_uri() . '/assets/css/font-awesome.min.css', array(), GNWS_VERSION);
 	wp_enqueue_style('gnws-swiper', get_template_directory_uri() . '/assets/css/swiper-bundle.min.css', array(), GNWS_VERSION);
+	wp_enqueue_style('gnws-slick', get_template_directory_uri() . '/assets/css/slick.css', array(), GNWS_VERSION);
+	wp_enqueue_style('gnws-slick-theme', get_template_directory_uri() . '/assets/css/slick-theme.css', array(), GNWS_VERSION);
 	wp_enqueue_style('gnws-evo-index', get_template_directory_uri() . '/assets/css/evo-index.scss.css', array(), GNWS_VERSION);
 	wp_enqueue_style('gnws-evo-main', get_template_directory_uri() . '/assets/css/evo-main.scss.css', array(), GNWS_VERSION);
 	wp_enqueue_style('gnws-ae-multilang', get_template_directory_uri() . '/assets/css/ae-multilang-custom.css', array(), GNWS_VERSION);
 	wp_enqueue_style('gnws-style-update', get_template_directory_uri() . '/assets/css/style_update.scss.css', array(), GNWS_VERSION);
 	wp_enqueue_style('gnws-css-font', get_template_directory_uri() . '/assets/fonts/font.css', array(), GNWS_VERSION);
-	wp_enqueue_style('gnws-style', get_stylesheet_uri(), array(), GNWS_VERSION);
 	wp_enqueue_style('gnws-evo-collections', get_template_directory_uri() . '/assets/css/evo-collections.scss.css', array(), GNWS_VERSION);
 	wp_enqueue_style('gnws-evo-products', get_template_directory_uri() . '/assets/css/evo-products.scss.css', array(), GNWS_VERSION);
+	wp_enqueue_style('gnws-evo-blog', get_template_directory_uri() . '/assets/css/evo-blog.css', array(), GNWS_VERSION);
+	wp_enqueue_style('gnws-evo-post', get_template_directory_uri() . '/assets/css/evo-post.css', array(), GNWS_VERSION);
+	wp_enqueue_style('gnws-evo-lightbox', get_template_directory_uri() . '/assets/css/lightbox.css', array(), GNWS_VERSION);
 
 	// JS Files
 	wp_enqueue_script('jquery');
 	wp_enqueue_script('gnws-swiper-js', get_template_directory_uri() . '/assets/js/swiper-bundle.min.js', array('jquery'), GNWS_VERSION, true);
 	// wp_enqueue_script('gnws-api-jquery', get_template_directory_uri() . '/assets/js/api.jquery.js', array('jquery'), GNWS_VERSION, true);
+	wp_enqueue_script('gnws-api-jquery', get_template_directory_uri() . '/assets/js/api.jquery.js', array('jquery'), GNWS_VERSION, true);
+	wp_enqueue_script('gnws-slick-js', get_template_directory_uri() . '/assets/js/slick.min.js', array('jquery'), GNWS_VERSION, true);
 	wp_enqueue_script('gnws-script', get_template_directory_uri() . '/js/script.min.js', array('jquery'), GNWS_VERSION, true);
 	wp_enqueue_script('gnws-main', get_template_directory_uri() . '/assets/js/main.js', array('jquery'), GNWS_VERSION, true);
 	wp_enqueue_script('gnws-datepicker', get_template_directory_uri() . '/assets/js/date.js', array('jquery'), GNWS_VERSION, true);
-	wp_enqueue_script('gnws-evo-index', get_template_directory_uri() . '/assets/js/evo-index-js.js', array('jquery'), GNWS_VERSION, true);
+	wp_enqueue_script('gnws-evo-index', get_template_directory_uri() . '/assets/js/evo-index-js.js', array('jquery', 'gnws-slick-js'), GNWS_VERSION, true);
 	wp_enqueue_script('gnws-evo-wishlist', get_template_directory_uri() . '/assets/js/evo-wishlist.js', array('jquery'), GNWS_VERSION, true);
 	wp_localize_script('gnws-script', 'ajaxurl', array('ajaxurl' => admin_url('admin-ajax.php')));
-	wp_enqueue_script('gnws-evo-product', get_template_directory_uri() . '/assets/js/evo-product.js', array('jquery'), GNWS_VERSION, true);
+	wp_enqueue_script('gnws-evo-product', get_template_directory_uri() . '/assets/js/evo-product.js', array('jquery', 'gnws-slick-js'), GNWS_VERSION, true);
+	wp_enqueue_script('gnws-evo-lightbox', get_template_directory_uri() . '/assets/js/jquery-prettyphoto.js', array('jquery'), GNWS_VERSION, true);
+	wp_enqueue_script('gnws-evo-lightbox-init', get_template_directory_uri() . '/assets/js/jquery-prettyphoto-init.js', array('jquery'), GNWS_VERSION, true);
 
 	if (is_singular() && comments_open() && get_option('thread_comments')) {
 		wp_enqueue_script('comment-reply');

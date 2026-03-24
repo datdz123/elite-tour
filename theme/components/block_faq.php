@@ -1,24 +1,17 @@
 <?php
-$hide_block = get_field('hide_block');
+$hide_block = get_sub_field('hide_block');
 if ($hide_block) return;
 
-$title = get_field('title');
-$list_faq = get_field('list_faq');
+$title = get_sub_field('title');
+$description = get_sub_field('description');
+$list_faq = get_sub_field('list_faq');
 
-$is_preview = defined('DOING_AJAX') && DOING_AJAX;
-$component_name = basename(__FILE__, '.php');
-$anchor = '';
-$class_name = '';
-if (!empty($block['anchor'])) {
-    $anchor = 'id=' . esc_attr($block['anchor']) . '';
-}
-
-if (!empty($block['className'])) {
-    $class_name .= ' ' . $block['className'];
-}
+$component_name = get_row_layout();
+$section_id = get_sub_field('section_id');
+$section_attr = $section_id ? ' id="' . esc_attr($section_id) . '"' : '';
 
 ?>
-<section class="page margin-top-20 margin-bottom-20 <?php echo esc_attr($class_name); ?>" <?php echo $anchor; ?> data-component="<?php echo esc_attr($component_name); ?>">
+<section<?php echo $section_attr; ?> class="page margin-top-20 margin-bottom-20" data-component="<?php echo esc_attr($component_name); ?>">
     <div class="container">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12">
@@ -172,11 +165,11 @@ if (!empty($block['className'])) {
                     <main class="container">
                         <div class="card" id="faq">
                             <header class="card-header">
-                                <?php if(get_field("title")) : ?>
-                                    <h1><?php echo get_field("title"); ?></h1>
+                                <?php if ($title) : ?>
+                                    <h1><?php echo esc_html($title); ?></h1>
                                 <?php endif; ?>
-                                <?php if(get_field("description")) : ?>
-                                    <h2 class="subtle"><?php echo get_field("description"); ?>&nbsp;</h2>
+                                <?php if ($description) : ?>
+                                    <h2 class="subtle"><?php echo esc_html($description); ?>&nbsp;</h2>
                                 <?php endif; ?>
                             </header>
                             <section class="accordion" role="tablist" aria-multiselectable="false">

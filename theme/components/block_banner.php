@@ -1,37 +1,21 @@
 <?php
+$component_name = get_row_layout();
+$hide_block = get_sub_field('hide_block');
+$section_id = get_sub_field('section_id');
+$section_attr = $section_id ? ' id="' . esc_attr($section_id) . '"' : '';
 
-/**
- * Block Banner template.
- *
- * @param array $block The block settings and attributes.
- */
-$component_name = basename(__FILE__, '.php');
-$anchor = '';
-$class_name = '';
-if (!empty($block['anchor'])) {
-	$anchor = 'id=' . esc_attr($block['anchor']) . '';
+if ($hide_block) {
+	return;
 }
 
-if (!empty($block['className'])) {
-	$class_name .= ' ' . $block['className'];
-}
-$post_id = $block['id'] ?? get_the_ID();
-
-// Get ACF fields - ensure compatibility with block editor
-$list_img = get_field('list_img', $post_id);
-$title_banner = get_field('title_banner', $post_id) ?: (isset($block['data']['title_banner']) ? $block['data']['title_banner'] : null);
+$list_img = get_sub_field('list_img');
+$title_banner = get_sub_field('title_banner');
 ?>
 
-<?php
-if (!empty($block['data']['preview_image_help']) && !empty($is_preview)): ?>
-	<img src="<?php echo esc_url($block['data']['preview_image_help']); ?>" style="width:100%;height:auto;" />
-	<?php return; ?>
-<?php endif; ?>
 
 
 
-
-<section <?php echo esc_attr($anchor); ?> class="awe-section-1<?php echo esc_attr($class_name); ?>" data-component="<?php echo $component_name; ?>">
+<section<?php echo $section_attr; ?> class="awe-section-1 banner-adaptive-height" data-component="<?php echo esc_attr($component_name); ?>">
 	<div class="home-slider">
 		<?php if ($list_img): ?>
 			<?php foreach ($list_img as $item):

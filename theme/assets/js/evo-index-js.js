@@ -1,5 +1,7 @@
 jQuery(document).ready(function ($) {
-	$('.home-slider').slick({
+	var $homeSlider = $('.home-slider');
+
+	$homeSlider.slick({
 		lazyLoad: 'ondemand',
 		autoplay: true,
 		autoplaySpeed: 6000,
@@ -9,5 +11,13 @@ jQuery(document).ready(function ($) {
 		arrows: false,
 		infinite: true,
 		adaptiveHeight: true
+	});
+
+	$homeSlider.find('img').on('load', function () {
+		$homeSlider.slick('setPosition');
+	});
+
+	$(window).on('load', function () {
+		$homeSlider.slick('setPosition');
 	});
 });

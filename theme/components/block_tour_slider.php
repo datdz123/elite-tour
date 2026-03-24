@@ -1,21 +1,12 @@
 <?php
-$is_preview = defined('DOING_AJAX') && DOING_AJAX;
-$component_name = basename(__FILE__, '.php');
-$anchor = '';
-$class_name = '';
-if (!empty($block['anchor'])) {
-    $anchor = 'id=' . esc_attr($block['anchor']) . '';
-}
+$component_name = get_row_layout();
+$hide_block = get_sub_field('hide_block');
+$section_id = get_sub_field('section_id');
+$section_attr = $section_id ? ' id="' . esc_attr($section_id) . '"' : '';
 
-if (!empty($block['className'])) {
-    $class_name .= ' ' . $block['className'];
-}
-
-// Get ACF fields
-$hide_block = get_field('hide_block');
-$title = get_field('title');
-$description = get_field('description');
-$list_img = get_field('list_img');
+$title = get_sub_field('title');
+$description = get_sub_field('description');
+$list_img = get_sub_field('list_img');
 
 // Don't render if block is hidden
 if ($hide_block) {
@@ -23,13 +14,7 @@ if ($hide_block) {
 }
 ?>
 
-<?php
-if (!empty($block['data']['preview_image_help']) && !empty($is_preview)): ?>
-    <img src="<?php echo esc_url($block['data']['preview_image_help']); ?>" style="width:100%;height:auto;" />
-    <?php return; ?>
-<?php endif; ?>
-
-<section <?php echo esc_attr($anchor); ?> class="awe-section-4<?php echo esc_attr($class_name); ?>" data-component="<?php echo $component_name; ?>">
+<section<?php echo $section_attr; ?> class="awe-section-4" data-component="<?php echo esc_attr($component_name); ?>">
     <!-- Swiper CSS -->
     <!-- <link rel="stylesheet" href="css/swiper-bundle.min.css"> -->
 
@@ -101,13 +86,9 @@ if (!empty($block['data']['preview_image_help']) && !empty($is_preview)): ?>
         }
     </style>
 
-    <!-- BỌC BẰNG SECTION TOUR ĐỂ ĐỒNG BỘ SPACING -->
     <div class="section_tour_inbound evo-index-tour">
         <div class="section_banner">
             <div class="container">
-
-                <!-- TIÊU ĐỀ + MÔ TẢ (DÙNG CHUNG CSS TOUR) -->
-
                 <div class="section_tour_last_hour_title">
                     <?php if ($title): ?>
                         <h2><?php echo esc_html($title); ?></h2>

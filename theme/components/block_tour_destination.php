@@ -1,27 +1,12 @@
 <?php
+$component_name = get_row_layout();
+$hide_block = get_sub_field('hide_block');
+$section_id = get_sub_field('section_id');
+$section_attr = $section_id ? ' id="' . esc_attr($section_id) . '"' : '';
 
-/**
- * Block Tour Destination template.
- *
- * @param array $block The block settings and attributes.
- */
-$is_preview = defined('DOING_AJAX') && DOING_AJAX;
-$component_name = basename(__FILE__, '.php');
-$anchor = '';
-$class_name = '';
-if (!empty($block['anchor'])) {
-    $anchor = 'id=' . esc_attr($block['anchor']) . '';
-}
-
-if (!empty($block['className'])) {
-    $class_name .= ' ' . $block['className'];
-}
-
-// Get ACF fields
-$hide_block = get_field('hide_block');
-$title = get_field('title');
-$description = get_field('description');
-$list_destination = get_field('list_destination');
+$title = get_sub_field('title');
+$description = get_sub_field('description');
+$list_destination = get_sub_field('list_destination');
 
 // Don't render if block is hidden
 if ($hide_block) {
@@ -32,13 +17,7 @@ if ($hide_block) {
 $arrow_icon = '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 300 300" style="enable-background:new 0 0 300 300;" xml:space="preserve"><path d="M150,0C67.157,0,0,67.157,0,150c0,82.841,67.157,150,150,150s150-67.159,150-150C300,67.157,232.843,0,150,0zM195.708,160.159c-0.731,0.731-1.533,1.349-2.368,1.886l-56.295,56.295c-2.734,2.736-6.318,4.103-9.902,4.103s-7.166-1.367-9.902-4.103c-5.47-5.47-5.47-14.34,0-19.808l48.509-48.516l-48.265-48.265c-5.47-5.473-5.47-14.34,0-19.808c5.47-5.47,14.338-5.467,19.808-0.003l56.046,56.043c0.835,0.537,1.637,1.154,2.365,1.886c2.796,2.796,4.145,6.479,4.082,10.146C199.852,153.68,198.506,157.361,195.708,160.159z"></path></svg>';
 ?>
 
-<?php
-if (!empty($block['data']['preview_image_help']) && !empty($is_preview)): ?>
-    <img src="<?php echo esc_url($block['data']['preview_image_help']); ?>" style="width:100%;height:auto;" />
-    <?php return; ?>
-<?php endif; ?>
-
-<section <?php echo esc_attr($anchor); ?> class="awe-section-9<?php echo esc_attr($class_name); ?>" data-component="<?php echo $component_name; ?>">
+<section<?php echo $section_attr; ?> class="awe-section-9" data-component="<?php echo esc_attr($component_name); ?>">
     <div class="section_tour_destination">
         <div class="container">
             <div class="row">

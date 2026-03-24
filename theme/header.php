@@ -33,7 +33,7 @@
 					$icon_location = get_field('icon_location', 'option');
 					$title_location = get_field('title_location', 'option');
 					?>
-					<div class="topbar_add" style="display: flex; align-items: center; gap:2px;">
+					<div class="topbar_add">
 						<?php if ($icon_location): ?>
 							<?php echo wp_get_attachment_image($icon_location, 'full', false, array('alt' => 'Địa chỉ')); ?>
 
@@ -55,7 +55,7 @@
 								$current_lang = reset($current_lang);
 						?>
 								<div class="evo-lang-dropdown" style="position: relative; margin-right: 15px; display: inline-block;">
-									<div class="lang-show" style="cursor: pointer; display: flex; align-items: center; gap: 8px; color: #fff; font-size: 14px; padding: 5px 0;">
+									<div class="lang-show" style="cursor: pointer; display: flex; align-items: center; gap: 8px; color: #fff; font-size: 14px;">
 										<?php if ($current_lang) : ?>
 											<img src="<?php echo esc_url($current_lang['flag']); ?>" alt="<?php echo esc_attr($current_lang['name']); ?>" style="width: 20px; height: auto; border-radius: 2px;">
 											<span><?php echo esc_html($current_lang['name']); ?></span>
@@ -173,7 +173,7 @@
 									$current_lang = reset($current_lang);
 							?>
 									<div class="evo-lang-dropdown" style="position: relative; display: inline-block;">
-										<div class="lang-show" style="cursor: pointer; display: flex; align-items: center; gap: 5px; color: #333; font-size: 13px; padding: 5px;">
+										<div class="lang-show" style="cursor: pointer; display: flex; align-items: center; gap: 5px; color: #333; font-size: 13px;>
 											<?php if ($current_lang) : ?>
 												<img src="<?php echo esc_url($current_lang['flag']); ?>" alt="<?php echo esc_attr($current_lang['name']); ?>" style="width: 18px; height: auto;">
 											<?php endif; ?>
@@ -207,24 +207,20 @@
 						<div class="evo-main-menu d-lg-block d-none">
 							<ul id="nav" class="nav">
 								<?php
-								// Lấy menu theo theme location - Polylang sẽ tự động xử lý theo ngôn ngữ
 								$menu_location = 'primary';
 								$menu_locations = get_nav_menu_locations();
 								$menu_id = isset($menu_locations[$menu_location]) ? $menu_locations[$menu_location] : 0;
 								$menu_items = $menu_id ? wp_get_nav_menu_items($menu_id) : array();
 
 								if ($menu_items) {
-									// Tổ chức menu items theo cấp bậc
 									$menu_tree = array();
 									$menu_items_by_id = array();
 
-									// Đầu tiên, index tất cả items theo ID
 									foreach ($menu_items as $item) {
 										$menu_items_by_id[$item->ID] = $item;
 										$item->children = array();
 									}
 
-									// Xây dựng cây menu
 									foreach ($menu_items as $item) {
 										if ($item->menu_item_parent == 0) {
 											$menu_tree[] = $item;
@@ -235,25 +231,55 @@
 										}
 									}
 
-									// SVG Arrow cho dropdown
 									$arrow_svg = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 490.656 490.656" style="enable-background:new 0 0 490.656 490.656;" xml:space="preserve" width="25px" height="25px"><path d="M487.536,120.445c-4.16-4.16-10.923-4.16-15.083,0L245.339,347.581L18.203,120.467c-4.16-4.16-10.923-4.16-15.083,0    c-4.16,4.16-4.16,10.923,0,15.083l234.667,234.667c2.091,2.069,4.821,3.115,7.552,3.115s5.461-1.045,7.531-3.136l234.667-234.667    C491.696,131.368,491.696,124.605,487.536,120.445z" data-original="#000000" class="active-path" data-old_color="#000000" fill="#141414"></path></svg>';
 
-									// Placeholder image
 
-									// Current URL để check active
-									$current_url = home_url(add_query_arg(array(), $GLOBALS['wp']->request));
+								if (!function_exists('gnws_is_menu_item_active')) {
+									function gnws_is_menu_item_active($item, $current_url)
+									{
+										$item_classes = is_array($item->classes) ? $item->classes : array();
+										$item_url = isset($item->url) ? $item->url : '';
+										$item_url_trimmed = trim($item_url);
+										$item_path = untrailingslashit((string) wp_parse_url($item_url, PHP_URL_PATH));
+										$current_path = untrailingslashit((string) wp_parse_url($current_url, PHP_URL_PATH));
+										$home_path = untrailingslashit((string) wp_parse_url(home_url('/'), PHP_URL_PATH));
 
-									// Render Level 1 items
+										if ($item_url_trimmed === '' || $item_url_trimmed === '#') {
+											return false;
+										}
+
+										if (
+											in_array('current-menu-item', $item_classes, true) ||
+											in_array('current_page_item', $item_classes, true) ||
+											in_array('current-menu-ancestor', $item_classes, true) ||
+											in_array('current-page-ancestor', $item_classes, true)
+										) {
+											return true;
+										}
+
+										if ($item_path !== '' && $item_path === $current_path) {
+											return true;
+										}
+
+										if ($current_path === $home_path && $item_path === $home_path) {
+											return true;
+										}
+
+										return false;
+									}
+								}
+
+								$current_request_uri = isset($_SERVER['REQUEST_URI']) ? wp_unslash($_SERVER['REQUEST_URI']) : '/';
+								$current_url = home_url($current_request_uri);
+
 									foreach ($menu_tree as $index => $item) {
 										$has_children = !empty($item->children);
-										$is_active = ($item->url == $current_url || $item->url == home_url('/') && is_front_page()) ? 'active' : '';
+										$is_active = gnws_is_menu_item_active($item, $current_url) ? 'active' : '';
 
-										// Get ACF fields cho menu item này
 										$choose_style = get_field('choose_style', $item->ID); // true = dropdown đơn giản, false = mega menu
 										$icon_menu = get_field('icon_menu', $item->ID);
 										$img_menu = get_field('img_menu', 'menu_item_' . $item->ID);
 
-										// Xác định class cho li
 										$li_classes = array('nav-item');
 										if ($is_active) $li_classes[] = 'active';
 										if ($has_children) {
@@ -263,7 +289,6 @@
 											}
 										}
 
-										// Check nếu là menu cuối thì thêm class evo-hover-left
 										if ($index >= count($menu_tree) - 2 && $has_children) {
 											$li_classes[] = 'evo-hover-left';
 										}
@@ -287,10 +312,8 @@
 
 										echo '</a>';
 
-										// Render children
 										if ($has_children) {
 											if ($choose_style) {
-												// Style 2: Dropdown đơn giản (giống Blog)
 												echo '<ul class="dropdown-menu">';
 												foreach ($item->children as $child) {
 													echo '<li class="nav-item-lv2">';
@@ -299,7 +322,6 @@
 												}
 												echo '</ul>';
 											} else {
-												// Style 1: Mega Menu (giống Tour)
 												echo '<div class="mega-content">';
 												echo '<div class="col-lg-3 no-padding">';
 												echo '<ul class="level0">';
@@ -321,7 +343,6 @@
 													echo '<li class="' . esc_attr(implode(' ', $level2_classes)) . '">';
 													echo '<a class="hmega" href="' . esc_url($child->url) . '" title="' . esc_attr($child->title) . '"><span>' . esc_html($child->title) . '</span></a>';
 
-													// Level 3 & 4
 													if ($has_grandchildren) {
 														echo '<div class="evo-sub-cate-1">';
 														echo '<div class="row fix-padding">';
@@ -446,14 +467,12 @@
 			<div class="la-scroll-fix-infor-user">
 				<ul class="la-nav-list-items">
 					<?php
-					// Get menu from primary location - same as desktop
 					$menu_location = 'primary';
 					$menu_locations = get_nav_menu_locations();
 					$menu_id = isset($menu_locations[$menu_location]) ? $menu_locations[$menu_location] : 0;
 					$menu_items = $menu_id ? wp_get_nav_menu_items($menu_id) : array();
 
 					if ($menu_items) {
-						// Build menu tree
 						$menu_tree = array();
 						$menu_items_by_id = array();
 
@@ -472,16 +491,23 @@
 							}
 						}
 
-						// Arrow SVG icons
+						$current_request_uri = isset($_SERVER['REQUEST_URI']) ? wp_unslash($_SERVER['REQUEST_URI']) : '/';
+						$current_url = home_url($current_request_uri);
+
 						$arrow_svg1 = '<svg class="svg1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 490.656 490.656" style="enable-background:new 0 0 490.656 490.656;" xml:space="preserve" width="25px" height="25px"><path d="M487.536,120.445c-4.16-4.16-10.923-4.16-15.083,0L245.339,347.581L18.203,120.467c-4.16-4.16-10.923-4.16-15.083,0c-4.16,4.16-4.16,10.923,0,15.083l234.667,234.667c2.091,2.069,4.821,3.115,7.552,3.115s5.461-1.045,7.531-3.136l234.667-234.667C491.696,131.368,491.696,124.605,487.536,120.445z" data-original="#000000" class="active-path" data-old_color="#000000" fill="#383838"></path></svg>';
 
 						$arrow_svg2 = '<svg class="svg2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 490.656 490.656" style="enable-background:new 0 0 490.656 490.656;" xml:space="preserve" width="25px" height="25px"><path d="M487.536,120.445c-4.16-4.16-10.923-4.16-15.083,0L245.339,347.581L18.203,120.467c-4.16-4.16-10.923-4.16-15.083,0c-4.16,4.16-4.16,10.923,0,15.083l234.667,234.667c2.091,2.069,4.821,3.115,7.552,3.115s5.461-1.045,7.531-3.136l234.667-234.667C491.696,131.368,491.696,124.605,487.536,120.445z" data-original="#000000" class="active-path" data-old_color="#000000" fill="#383838"></path></svg>';
 
-						// Render menu items recursively
-						function gnws_render_mobile_menu_item($item, $menu_items_by_id, $arrow_svg1, $arrow_svg2, $level = 1)
+						function gnws_render_mobile_menu_item($item, $menu_items_by_id, $arrow_svg1, $arrow_svg2, $current_url, $level = 1)
 						{
 							$has_children = !empty($item->children);
 							$li_class = 'ng-scope';
+							$is_active = gnws_is_menu_item_active($item, $current_url);
+
+							if ($is_active) {
+								$li_class .= ' active';
+							}
+
 							if ($has_children) {
 								$li_class .= ' ng-has-child' . $level;
 							}
@@ -498,7 +524,7 @@
 								$ul_class = ($level == 1) ? 'ul-has-child1' : 'ul-has-child2';
 								echo '<ul class="' . esc_attr($ul_class) . '">';
 								foreach ($item->children as $child) {
-									gnws_render_mobile_menu_item($child, $menu_items_by_id, $arrow_svg1, $arrow_svg2, $level + 1);
+									gnws_render_mobile_menu_item($child, $menu_items_by_id, $arrow_svg1, $arrow_svg2, $current_url, $level + 1);
 								}
 								echo '</ul>';
 							}
@@ -508,7 +534,7 @@
 
 						// Render all top-level items
 						foreach ($menu_tree as $item) {
-							gnws_render_mobile_menu_item($item, $menu_items_by_id, $arrow_svg1, $arrow_svg2, 1);
+							gnws_render_mobile_menu_item($item, $menu_items_by_id, $arrow_svg1, $arrow_svg2, $current_url, 1);
 						}
 					}
 					?>

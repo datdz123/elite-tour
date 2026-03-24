@@ -1,21 +1,12 @@
 <?php
-
-/**
- * Block Thư viện ảnh template.
- *
- * @param array $block The block settings and attributes.
- */
-$is_preview = defined('DOING_AJAX') && DOING_AJAX;
-$component_name = basename(__FILE__, '.php');
-$anchor = '';
-if (!empty($block['anchor'])) {
-    $anchor = 'id=' . esc_attr($block['anchor']) . '';
+$hide_block = get_sub_field('hide_block');
+if ($hide_block) {
+    return;
 }
 
-// Logic for Block Editor Preview
-if ($is_preview) {
-    echo '<div style="padding: 20px; background: #f1f1f1; border: 1px dashed #ccc; text-align: center;">[Block] Thư viện ảnh - Hiển thị tất cả hình ảnh</div>';
-}
+$component_name = get_row_layout();
+$section_id = get_sub_field('section_id');
+$section_attr = $section_id ? ' id="' . esc_attr($section_id) . '"' : '';
 
 // Query all galley_img posts
 $gallery_posts = new WP_Query(array(
@@ -26,7 +17,7 @@ $gallery_posts = new WP_Query(array(
     'order' => 'DESC',
 ));
 ?>
-<section <?php echo $anchor; ?>>
+<section<?php echo $section_attr; ?> data-component="<?php echo esc_attr($component_name); ?>">
     <div class="page page_thuvienanh">
         <div class="page_thuvienanh_list">
             <div class="container">

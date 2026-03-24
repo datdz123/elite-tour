@@ -4,6 +4,17 @@
     overflow: hidden
 }
 
+/* Banner slider adaptive height override */
+.banner-adaptive-height .home-slider .slick-list {
+    transition: height 0.3s ease;
+}
+
+.banner-adaptive-height .home-slider .item img {
+    height: auto !important;
+    display: block;
+    object-fit: contain;
+}
+
 .shine-wrapper::before {
     content: '';
     position: absolute;

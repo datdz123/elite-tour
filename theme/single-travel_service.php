@@ -719,7 +719,14 @@ $has_amenities = have_rows('list_tien_ich');
                         <h3 class="cta-name-pro"><?php the_title(); ?></h3>
                     </div>
                     <div class="col-lg-7 col-md-7 col-sm-7">
-                        <?php echo do_shortcode('[contact-form-7 id="898b7f2" title="Form Đăng ký dịch vụ du lịch"]') ?>
+                        <?php
+                        echo do_shortcode(
+                            sprintf(
+                                '[contact-form-7 id="898b7f2" title="Form Đăng ký dịch vụ du lịch" tour_name="%s"]',
+                                esc_attr(get_the_title())
+                            )
+                        );
+                        ?>
                     </div>
                 </div>
             </div>
@@ -746,7 +753,18 @@ $has_amenities = have_rows('list_tien_ich');
     });
 </script>
 <script>
+    document.addEventListener("DOMContentLoaded", function () {
+    let tourName = document.querySelector('.cta-name-pro')?.innerText;
+
+    if (tourName) {
+        let input = document.querySelector('input[name="tour_name"]');
+        if (input) input.value = tourName.trim();
+    }
+});
+
     jQuery(function($) {
+
+    
         $('.page_appear_listitem').click(function() {
             if ($(this).hasClass('active')) {
                 $(this).removeClass('active');

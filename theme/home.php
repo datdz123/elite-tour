@@ -17,7 +17,7 @@ get_header(); ?>
 		endwhile;
 	endif;
 	?>
-	<h1 class="hidden">
+	<h1 class="hidden" style="display: none;">
 		<?php echo wp_title() ?>
 	</h1>
 </main>

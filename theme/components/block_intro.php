@@ -1,23 +1,13 @@
 <?php
-$hide_block = get_field('hide_block');
+$hide_block = get_sub_field('hide_block');
 if ($hide_block) return;
 
-$title = get_field('title');
-$list_faq = get_field('list_faq');
-
-$is_preview = defined('DOING_AJAX') && DOING_AJAX;
-$component_name = basename(__FILE__, '.php');
-$anchor = '';
-$class_name = '';
-if (!empty($block['anchor'])) {
-    $anchor = 'id=' . esc_attr($block['anchor']) . '';
-}
-
-if (!empty($block['className'])) {
-    $class_name .= ' ' . $block['className'];
-}
+$content = get_sub_field('content');
+$component_name = get_row_layout();
+$section_id = get_sub_field('section_id');
+$section_attr = $section_id ? ' id="' . esc_attr($section_id) . '"' : '';
 ?>
-<section data-component="<?= $component_name ?>" <?= $anchor ?> class="page margin-top-20 margin-bottom-20 <?= $class_name ?>">
+<section<?php echo $section_attr; ?> data-component="<?php echo esc_attr($component_name); ?>" class="page margin-top-20 margin-bottom-20">
     <div class="container">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12">
@@ -52,8 +42,8 @@ if (!empty($block['className'])) {
                     <!-- Mobile: Xem bằng Google Docs Viewer -->
                     <div class="pdf-mobile"><iframe style="width: 100%; height: 700px; border: none;" src="https://docs.google.com/gview?embedded=true&amp;url=https://bizweb.dktcdn.net/100/562/154/files/profile-cong-ty-du-lich-elite-tour.pdf?v=1765533655447"></iframe></div>
 
-                    <?php if (get_field("content")) : ?>
-                        <?php the_field("content"); ?>
+                    <?php if ($content) : ?>
+                        <?php echo wp_kses_post($content); ?>
                     <?php endif; ?>
                 </div>
             </div>

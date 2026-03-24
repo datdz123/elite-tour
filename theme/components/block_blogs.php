@@ -1,29 +1,14 @@
 <?php
+$component_name = get_row_layout();
+$hide_block = get_sub_field('hide_block');
+$section_id = get_sub_field('section_id');
+$section_attr = $section_id ? ' id="' . esc_attr($section_id) . '"' : '';
 
-/**
- * Block Blogs template.
- *
- * @param array $block The block settings and attributes.
- */
-$is_preview = defined('DOING_AJAX') && DOING_AJAX;
-$component_name = basename(__FILE__, '.php');
-$anchor = '';
-$class_name = '';
-if (!empty($block['anchor'])) {
-    $anchor = 'id=' . esc_attr($block['anchor']) . '';
-}
-
-if (!empty($block['className'])) {
-    $class_name .= ' ' . $block['className'];
-}
-
-// Get ACF fields
-$hide_block = get_field('hide_block');
-$title = get_field('title');
-$description = get_field('description');
-$category_post = get_field('category_post'); // Taxonomy field - returns term object or ID
-$posts_count = get_field('choose_post'); // Number field - số lượng bài viết
-$title_btn = get_field('title_btn');
+$title = get_sub_field('title');
+$description = get_sub_field('description');
+$category_post = get_sub_field('category_post');
+$posts_count = get_sub_field('choose_post');
+$title_btn = get_sub_field('title_btn');
 
 // Don't render if block is hidden
 if ($hide_block) {
@@ -87,13 +72,7 @@ if ($query->have_posts()) {
 wp_reset_postdata();
 ?>
 
-<?php
-if (!empty($block['data']['preview_image_help']) && !empty($is_preview)): ?>
-    <img src="<?php echo esc_url($block['data']['preview_image_help']); ?>" style="width:100%;height:auto;" />
-    <?php return; ?>
-<?php endif; ?>
-
-<section <?php echo esc_attr($anchor); ?> class="awe-section-10<?php echo esc_attr($class_name); ?>" data-component="<?php echo $component_name; ?>">
+<section<?php echo $section_attr; ?> class="awe-section-10" data-component="<?php echo esc_attr($component_name); ?>">
     <div class="section_blogs">
         <div class="container">
             <div class="row">

@@ -1,33 +1,16 @@
 <?php
+$component_name = get_row_layout();
+$hide_block = get_sub_field('hide_block');
+$section_id = get_sub_field('section_id');
+$section_attr = $section_id ? ' id="' . esc_attr($section_id) . '"' : '';
+$list_policy = get_sub_field('list_policy');
 
-/**
- * Block Tour Policy template.
- *
- * @param array $block The block settings and attributes.
- */
-$component_name = basename(__FILE__, '.php');
-$anchor = '';
-$class_name = '';
-if (!empty($block['anchor'])) {
-    $anchor = 'id=' . esc_attr($block['anchor']) . '';
+if ($hide_block) {
+    return;
 }
-
-if (!empty($block['className'])) {
-    $class_name .= ' ' . $block['className'];
-}
-
-// Get ACF fields
-$is_preview = defined('DOING_AJAX') && DOING_AJAX;
-$list_policy = get_field('list_policy');
 ?>
 
-<?php
-if (!empty($block['data']['preview_image_help']) && !empty($is_preview)): ?>
-    <img src="<?php echo esc_url($block['data']['preview_image_help']); ?>" style="width:100%;height:auto;" />
-    <?php return; ?>
-<?php endif; ?>
-
-<section <?php echo esc_attr($anchor); ?> class="awe-section-2<?php echo esc_attr($class_name); ?>" data-component="<?php echo $component_name; ?>">
+<section<?php echo $section_attr; ?> class="awe-section-2" data-component="<?php echo esc_attr($component_name); ?>">
     <div class="section_tour_policy">
         <div class="container">
             <div class="row">
@@ -51,7 +34,7 @@ if (!empty($block['data']['preview_image_help']) && !empty($is_preview)): ?>
                             <div class="evo-tour-policy-item">
                                 <a href="#" title="<?php echo esc_attr($title); ?>">
                                     <div class="icon">
-                                        <img src="<?php echo $icon_url;?>"
+                                        <img src="<?php echo esc_url($icon_url); ?>"
                                             data-src="<?php echo esc_url($icon_url); ?>"
                                             alt="<?php echo esc_attr($title); ?>" class="lazy img-responsive mx-auto d-block">
                                     </div>

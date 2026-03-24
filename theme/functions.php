@@ -210,6 +210,56 @@ function gnws_scripts()
 }
 add_action('wp_enqueue_scripts', 'gnws_scripts');
 
+/**
+ * Populate CF7 hidden tour name field from the current container post.
+ */
+function gnws_cf7_fill_tour_name($posted_data)
+{
+	if (!is_array($posted_data) || !empty($posted_data['tour-name'])) {
+		return $posted_data;
+	}
+
+	$container_post_id = isset($posted_data['_wpcf7_container_post']) ? absint($posted_data['_wpcf7_container_post']) : 0;
+
+	if (!$container_post_id) {
+		return $posted_data;
+	}
+
+	$tour_name = get_the_title($container_post_id);
+
+	if ($tour_name) {
+		$posted_data['tour-name'] = $tour_name;
+	}
+
+	return $posted_data;
+}
+add_filter('wpcf7_posted_data', 'gnws_cf7_fill_tour_name');
+
+/**
+ * Ensure CFDB7 stores tour name even if the CF7 hidden field is empty.
+ */
+function gnws_cfdb7_fill_tour_name($form_data)
+{
+	if (!is_array($form_data) || !empty($form_data['tour-name'])) {
+		return $form_data;
+	}
+
+	$container_post_id = isset($form_data['_wpcf7_container_post']) ? absint($form_data['_wpcf7_container_post']) : 0;
+
+	if (!$container_post_id) {
+		return $form_data;
+	}
+
+	$tour_name = get_the_title($container_post_id);
+
+	if ($tour_name) {
+		$form_data['tour-name'] = $tour_name;
+	}
+
+	return $form_data;
+}
+add_filter('cfdb7_before_save_data', 'gnws_cfdb7_fill_tour_name');
+
 
 /**
  * Add the Tailwind Typography classes to TinyMCE.
@@ -247,7 +297,7 @@ require get_template_directory() . '/inc/customizer-widget.php';
 /**
  * Customizer Block.
  */
-require get_template_directory() . '/inc/customizer-block.php';
+// require get_template_directory() . '/inc/customizer-block.php';
 /**
  * Hide Custom Theme
  */

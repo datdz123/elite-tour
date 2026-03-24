@@ -1,5 +1,8 @@
  <?php
 
+	if (! isset($post_item)) {
+		$post_item = get_post();
+	}
 	$post_id = $post_item->ID;
 	$post_title = get_the_title($post_id);
 	$post_link = get_permalink($post_id);

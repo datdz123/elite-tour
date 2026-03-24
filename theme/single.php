@@ -77,62 +77,10 @@ $post_tags = get_the_tags($post_id);
 												}
 											?>
 												<div class="evo-slick">
-													<div class="evo-product-block-item">
-														<div class="img-tour">
-															<a class="imgWrap pt_67 img--cover" href="<?php echo esc_url($tour_link); ?>" title="<?php echo esc_attr($tour_title); ?>">
-																<span class="imgWrap-item">
-																	<img style="opacity: 1" class="lazy" src="<?php echo $tour_thumbnail; ?>" alt="<?php echo esc_attr($tour_title); ?>">
-																</span>
-															</a>
-															<?php if ($discount_percent > 0) : ?>
-																<span class="smart">- <?php echo $discount_percent; ?>% </span>
-															<?php endif; ?>
-														</div>
-														<div class="info-tour clearfix">
-															<h3><a href="<?php echo esc_url($tour_link); ?>" title="<?php echo esc_attr($tour_title); ?>"><?php echo esc_html($tour_title); ?></a></h3>
-															<div class="vote-box">
-																<div class="meta-vote">
-																	<ul class="ct_course_list">
-																		<?php if ($move_bus) : ?>
-																			<li data-toggle="tooltip" data-placement="top" title="Xe máy lạnh sử dụng theo chương trình">
-																				<img src="<?php echo get_template_directory_uri(); ?>/assets/images/tag_icon_1.svg" alt="Xe máy lạnh">
-																			</li>
-																		<?php endif; ?>
-																		<?php if ($move_plain) : ?>
-																			<li data-toggle="tooltip" data-placement="top" title="Di chuyển bằng Máy bay">
-																				<img src="<?php echo get_template_directory_uri(); ?>/assets/images/tag_icon_3.svg" alt="Máy bay">
-																			</li>
-																		<?php endif; ?>
-																	</ul>
-																</div>
-															</div>
-															<div class="date-go">
-																<ul class="ct_course_list">
-																	<?php if ($tour_departure) : ?>
-																		<li class="clearfix">
-																			<img src="<?php echo get_template_directory_uri(); ?>/assets/images/tag_icon_4.svg" alt="<?php echo esc_attr($tour_departure); ?>"> Lịch khởi hành: <span><?php echo esc_html($tour_departure); ?></span>
-																		</li>
-																	<?php endif; ?>
-																	<?php if ($tour_time) : ?>
-																		<li class="clearfix">
-																			<img src="<?php echo get_template_directory_uri(); ?>/assets/images/tag_icon_5.svg" alt="<?php echo esc_attr($tour_time); ?>"> Thời gian: <span><?php echo esc_html($tour_time); ?></span>
-																		</li>
-																	<?php endif; ?>
-																</ul>
-															</div>
-															<div class="action-box">
-																<div class="price-box">
-																	<?php echo number_format($tour_price, 0, ',', '.'); ?>₫
-																	<?php if ($tour_price_original > $tour_price) : ?>
-																		<span class="compare-price"><?php echo number_format($tour_price_original, 0, ',', '.'); ?>₫</span>
-																	<?php endif; ?>
-																</div>
-																<div class="booking-box d-none">
-																	<a href="<?php echo esc_url($tour_link); ?>" title="Đặt Tour" class="btn btn-sm">ĐẶT TOUR</a>
-																</div>
-															</div>
-														</div>
-													</div>
+													<?php
+													set_query_var('tour_post', get_post());
+													get_template_part('template-parts/content', 'travel_service');
+													?>
 												</div>
 											<?php
 											endwhile;

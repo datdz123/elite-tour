@@ -279,7 +279,7 @@ input[type="number"] {
 }
 
 .topbar {
-    background: #1a3863;
+    background: var(--primary-color);
     padding: 10px 0
 }
 
@@ -459,7 +459,7 @@ img.icon_nav {
     font-weight: bold;
     display: inline-block;
     background: #cacaca;
-    color: #1a3863;
+    color: var(--primary-color);
     text-align: center;
     border-radius: 4px;
     padding: 5px 15px
@@ -467,14 +467,14 @@ img.icon_nav {
 
 .page_thuvienanh_list .wrap a:hover,
 .page_thuvienanh_list .wrap a.active {
-    background: #1a3863;
+    background: var(--primary-color);
     color: #fff
 }
 
 .search-header-mobile {
     padding-top: 5px;
     padding-bottom: 5px;
-    background: #1a3863
+    background: var(--primary-color)
 }
 
 @media (max-width: 767px) {
@@ -532,8 +532,8 @@ img.icon_nav {
 }
 
 .search-suggest::-webkit-scrollbar-thumb {
-    background-color: #1a3863;
-    outline: 1px solid #1a3863
+    background-color: var(--primary-color);
+    outline: 1px solid var(--primary-color)
 }
 
 .search-suggest::-webkit-scrollbar {
@@ -566,11 +566,11 @@ img.icon_nav {
     margin-bottom: 20px;
     position: relative;
     display: inline-block;
-    color: #1a3863
+    color: var(--primary-color)
 }
 
 .list-search-style .title-search span:before {
-    background: #1a3863;
+    background: var(--primary-color);
     content: '';
     right: 0;
     left: 0;
@@ -590,7 +590,7 @@ img.icon_nav {
     font-size: 16px;
     font-weight: 500;
     margin-top: 15px;
-    background: #1a3863
+    background: var(--primary-color)
 }
 
 .list-search-style .see-more:hover {
@@ -714,7 +714,7 @@ h1.title-page-search {
     max-width: 500px;
     border-radius: 6px;
     overflow: hidden;
-    border: 2px solid #1a3863
+    border: 2px solid var(--primary-color)
 }
 
 .blog-search-form input {
@@ -730,7 +730,7 @@ h1.title-page-search {
     right: 1px;
     width: 60px;
     height: 38px !important;
-    background: #1a3863 !important;
+    background: var(--primary-color) !important;
     border: 0;
     border-radius: 5px;
     top: 1px
@@ -815,7 +815,7 @@ h1.title-page-search {
 }
 
 .item-blog .block-content h3 a {
-    color: #1a3863
+    color: var(--primary-color)
 }
 
 .item-blog .block-content h3 a:hover {
@@ -828,7 +828,7 @@ h1.title-page-search {
     font-size: 16px;
     font-weight: 700;
     margin-bottom: 5px;
-    color: #1a3863
+    color: var(--primary-color)
 }
 
 .item-blog .block-content .time-post svg {
@@ -836,9 +836,69 @@ h1.title-page-search {
 }
 
 .item-blog .block-content .time-post svg path {
-    fill: #1a3863
+    fill: var(--primary-color)
 }
 
 .item-blog .block-content p {
     margin-bottom: 0
+}
+
+@media (min-width: 1000px) and (max-width: 1280px) {
+    .topbar .topbar_add {
+        font-size: 10px;
+    }
+
+    .topbar .topbar_list {
+        gap: 15px;
+    }
+
+    .topbar .topbar_list a {
+        font-size: 10px;
+    }
+
+    .lang-show span {
+        font-size: 10px;
+    }
+}
+
+.topbar .topbar_list {
+    align-items: center;
+}
+
+/* Kiểu dáng cho Banner Slider có kích thước bằng nhau */
+.home-slider .item a {
+    display: block;
+    width: 100%;
+}
+
+.home-slider .item img {
+    width: 100% !important;
+    height: 600px !important;
+    /* Chiều cao cố định cho desktop */
+    object-fit: cover;
+    /* Giúp ảnh không bị méo */
+}
+
+@media (max-width: 1199px) {
+    .home-slider .item img {
+        height: 500px !important;
+    }
+}
+
+@media (max-width: 991px) {
+    .home-slider .item img {
+        height: 400px !important;
+    }
+}
+
+@media (max-width: 767px) {
+    .home-slider .item img {
+        height: 300px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .home-slider .item img {
+        height: 250px !important;
+    }
 }

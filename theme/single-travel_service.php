@@ -3,6 +3,42 @@ get_header();
 ?>
 <?php get_template_part('template-parts/breadcrumb'); ?>
 
+<?php
+// Get data for conditional sections and labels
+$current_post_id = get_the_ID();
+$taxonomy_terms = get_the_terms($current_post_id, 'taxonomy_travel');
+$term_ids = array();
+$first_term_link = get_post_type_archive_link('travel_service');
+
+$cate_name = __('Tour', 'gnws'); // Mặc định nếu không có category
+
+if ($taxonomy_terms && !is_wp_error($taxonomy_terms)) {
+    $first_term = $taxonomy_terms[0];
+    foreach ($taxonomy_terms as $term) {
+        $term_ids[] = $term->term_id;
+    }
+
+    // Lấy cấp cha cao nhất (Root Parent)
+    $ancestors = get_ancestors($first_term->term_id, 'taxonomy_travel');
+    $root_term_id = !empty($ancestors) ? end($ancestors) : $first_term->term_id;
+    $root_term = get_term($root_term_id, 'taxonomy_travel');
+
+    if ($root_term && !is_wp_error($root_term)) {
+        $cate_name = $root_term->name;
+    }
+
+    $first_term_link = get_term_link($first_term);
+}
+
+$content_overview = get_field('content_overview');
+$list_schedule = get_field('list_schedule');
+$move_plain = get_field('move_plain');
+$tour_departure_schedule = get_field('tour_departure_schedule');
+$tour_time = get_field('tour_time');
+$booking_tour_price = get_field('tour_price');
+$has_amenities = have_rows('list_tien_ich');
+?>
+
 
 <section class="product product-margin" itemscope itemtype="http://schema.org/Product">
     <script type="application/ld+json">
@@ -110,50 +146,54 @@ get_header();
                 <div class=' product-image-block-2'>
                     <div class="product-bg-white  evo-tour-program">
                         <ul class="tour-program">
-                            <li><a href="#tour-1" class="scroll-content"><img src="//bizweb.dktcdn.net/100/562/154/themes/1004558/assets/product_tab1_icon.png?1768795562299" alt="Tổng quan" /> <span>Tổng quan</span></a></li>
-                            <li><a href="#tour-2" class="scroll-content"><img src="//bizweb.dktcdn.net/100/562/154/themes/1004558/assets/product_tab2_icon.png?1768795562299" alt="Lịch trình" /> <span>Lịch trình</span></a></li>
-                            <li><a href="#book-tour-now" class="scroll-content"><img src="//bizweb.dktcdn.net/100/562/154/themes/1004558/assets/product_tab3_icon.png?1768795562299" alt="Đặt tour" /> <span>Đặt tour</span></a></li>
+                            <?php if ($content_overview) : ?>
+                                <li><a href="#tour-1" class="scroll-content"><img src="//bizweb.dktcdn.net/100/562/154/themes/1004558/assets/product_tab1_icon.png?1768795562299" alt="<?php _e('Tổng quan', 'gnws'); ?>" /> <span><?php _e('Tổng quan', 'gnws'); ?></span></a></li>
+                            <?php endif; ?>
+                            <?php if ($list_schedule) : ?>
+                                <li><a href="#tour-2" class="scroll-content"><img src="//bizweb.dktcdn.net/100/562/154/themes/1004558/assets/product_tab2_icon.png?1768795562299" alt="<?php _e('Lịch trình', 'gnws'); ?>" /> <span><?php _e('Lịch trình', 'gnws'); ?></span></a></li>
+                            <?php endif; ?>
+                            <?php if ($has_amenities) : ?>
+                                <li><a href="#tour-3" class="scroll-content"><img src="//bizweb.dktcdn.net/100/562/154/themes/1004558/assets/product_tab1_icon.png?1768795562299" alt="<?php _e('Tiện ích', 'gnws'); ?>" /> <span><?php _e('Tiện ích', 'gnws'); ?></span></a></li>
+                            <?php endif; ?>
+                            <li><a href="#book-tour-now" class="scroll-content"><img src="//bizweb.dktcdn.net/100/562/154/themes/1004558/assets/product_tab3_icon.png?1768795562299" alt="<?php printf(__('Đặt %s', 'gnws'), $cate_name); ?>" /> <span><?php printf(__('Đặt %s', 'gnws'), $cate_name); ?></span></a></li>
                         </ul>
                     </div>
-                    <div class='product-bg-white mt_15'>
-                        <ul class="ct_course_list">
-                            <?php
-                            $move_plain = get_field('move_plain');
-                            $tour_departure_schedule = get_field('tour_departure_schedule');
-                            $tour_time = get_field('tour_time');
 
-                            if ($move_plain) :
-                                foreach ($move_plain as $transport) :
-                                    $icon_id = $transport['icon'];
-                                    $icon_url = $icon_id ? wp_get_attachment_image_url($icon_id, 'thumbnail') : '';
-                                    $content = $transport['content'];
-                            ?>
+                    <?php if ($move_plain || $tour_departure_schedule || $tour_time) : ?>
+                        <div class='product-bg-white mt_15'>
+                            <ul class="ct_course_list">
+                                <?php
+                                if ($move_plain) :
+                                    foreach ($move_plain as $transport) :
+                                        $icon_id = $transport['icon'];
+                                        $icon_url = $icon_id ? wp_get_attachment_image_url($icon_id, 'thumbnail') : '';
+                                        $content = $transport['content'];
+                                ?>
+                                        <li>
+                                            <?php if ($icon_url) : ?>
+                                                <img src="<?php echo esc_url($icon_url); ?>" alt="<?php echo esc_attr($content); ?>" />
+                                            <?php endif; ?>
+                                            <?php _e('Di chuyển:', 'gnws'); ?> <span class="tag-color"><?php echo esc_html($content); ?></span>
+                                        </li>
+                                <?php
+                                    endforeach;
+                                endif;
+                                ?>
+                                <?php if ($tour_departure_schedule) : ?>
                                     <li>
-                                        <?php if ($icon_url) : ?>
-                                            <img src="<?php echo esc_url($icon_url); ?>" alt="<?php echo esc_attr($content); ?>" />
-                                        <?php endif; ?>
-                                        <?php _e('Di chuyển:', 'gnws'); ?> <span class="tag-color"><?php echo esc_html($content); ?></span>
+                                        <img src="<?php echo get_template_directory_uri(); ?>/assets/images/tag_icon_4.svg" alt="<?php echo esc_attr($tour_departure_schedule); ?>" />
+                                        <?php _e('Lịch khởi hành:', 'gnws'); ?> <span class="tag-color"><span id="date-khoi-hanh"><?php echo esc_html($tour_departure_schedule); ?></span></span>
                                     </li>
-                            <?php
-                                endforeach;
-                            endif;
-                            ?>
-                            <?php if ($tour_departure_schedule) : ?>
-                                <li>
-                                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/tag_icon_4.svg" alt="<?php echo esc_attr($tour_departure_schedule); ?>" />
-                                    <?php _e('Lịch khởi hành:', 'gnws'); ?> <span class="tag-color"><span id="date-khoi-hanh"><?php echo esc_html($tour_departure_schedule); ?></span></span>
-                                </li>
-                            <?php endif; ?>
-                            <?php if ($tour_time) : ?>
-                                <li>
-                                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/tag_icon_5.svg" alt="<?php echo esc_attr($tour_time); ?>" />
-                                    <?php _e('Thời gian:', 'gnws'); ?> <span class="tag-color"><?php echo esc_html($tour_time); ?></span>
-                                </li>
-                            <?php endif; ?>
-                        </ul>
-                    </div>
-
-
+                                <?php endif; ?>
+                                <?php if ($tour_time) : ?>
+                                    <li>
+                                        <img src="<?php echo get_template_directory_uri(); ?>/assets/images/tag_icon_5.svg" alt="<?php echo esc_attr($tour_time); ?>" />
+                                        <?php _e('Thời gian:', 'gnws'); ?> <span class="tag-color"><?php echo esc_html($tour_time); ?></span>
+                                    </li>
+                                <?php endif; ?>
+                            </ul>
+                        </div>
+                    <?php endif; ?>
                 </div>
 
                 <section class='prd_content  mt_15'>
@@ -161,69 +201,92 @@ get_header();
                     $content_overview = get_field('content_overview');
                     $list_schedule = get_field('list_schedule');
                     ?>
-                    <h3 class="prd_content_title" id="tour-1">
-                        <a href="javascript:void(0);" title="<?php _e('Tổng quan', 'gnws'); ?>">
-                            <?php _e('Tổng quan', 'gnws'); ?>
-                        </a>
-                    </h3>
-                    <div class="rte product-bg-white">
-                        <?php if ($content_overview) : ?>
-                            <?php echo $content_overview; ?>
-                        <?php else : ?>
-                            <p><?php _e('Chưa có nội dung tổng quan.', 'gnws'); ?></p>
-                        <?php endif; ?>
-                    </div>
-
-                    <h3 class="prd_content_title" id="tour-2">
-                        <a href="javascript:void(0);" title="<?php _e('Lịch trình', 'gnws'); ?>">
-                            <?php _e('Lịch trình', 'gnws'); ?>
-                        </a>
-                    </h3>
-                    <div class="product-bg-white">
-                        <div id="accordion" class="page_appear_list">
-                            <?php if ($list_schedule) :
-                                $first = true;
-                                foreach ($list_schedule as $schedule) :
-                                    $title = $schedule['title'];
-                                    $content = $schedule['content_schedule'];
-                            ?>
-                                    <div class="page_appear_listitem <?php echo $first ? 'active' : ''; ?>">
-                                        <h3 class="title">
-                                            <?php echo esc_html($title); ?>
-                                        </h3>
-                                        <div class="pane rte" <?php echo !$first ? 'style="display: none;"' : ''; ?>>
-                                            <?php echo $content; ?>
-                                        </div>
-                                    </div>
-                                <?php
-                                    $first = false;
-                                endforeach;
-                            else : ?>
-                                <div class="page_appear_listitem">
-                                    <h3 class="title">
-                                        <?php _e('Chưa có lịch trình', 'gnws'); ?>
-                                    </h3>
-                                    <div class="pane rte">
-                                        <p><?php _e('Lịch trình đang được cập nhật.', 'gnws'); ?></p>
-                                    </div>
-                                </div>
+                    <?php if ($content_overview) : ?>
+                        <h3 class="prd_content_title" id="tour-1">
+                            <a href="javascript:void(0);" title="<?php _e('Tổng quan', 'gnws'); ?>">
+                                <?php _e('Tổng quan', 'gnws'); ?>
+                            </a>
+                        </h3>
+                        <div class="rte product-bg-white">
+                            <?php if ($content_overview) : ?>
+                                <?php echo $content_overview; ?>
                             <?php endif; ?>
                         </div>
-                    </div>
-
+                    <?php endif; ?>
+                    <?php if ($list_schedule) : ?>
+                        <h3 class="prd_content_title" id="tour-2">
+                            <a href="javascript:void(0);" title="<?php _e('Lịch trình', 'gnws'); ?>">
+                                <?php _e('Lịch trình', 'gnws'); ?>
+                            </a>
+                        </h3>
+                        <div class="product-bg-white">
+                            <div id="accordion" class="page_appear_list">
+                                <?php if ($list_schedule) :
+                                    $first = true;
+                                    foreach ($list_schedule as $schedule) :
+                                        $title = $schedule['title'];
+                                        $content = $schedule['content_schedule'];
+                                ?>
+                                        <div class="page_appear_listitem <?php echo $first ? 'active' : ''; ?>">
+                                            <h3 class="title">
+                                                <?php echo esc_html($title); ?>
+                                            </h3>
+                                            <div class="pane rte" <?php echo !$first ? 'style="display: none;"' : ''; ?>>
+                                                <?php echo $content; ?>
+                                            </div>
+                                        </div>
+                                <?php
+                                        $first = false;
+                                    endforeach;
+                                endif; ?>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+                    <?php if (have_rows('list_tien_ich')): ?>
+                        <div class="prd_content_title" id="tour-3">
+                            <a href="javascript:void(0);" title="<?php _e('Đặt tour', 'gnws'); ?>">
+                                <?php _e('Tiện ích', 'gnws'); ?>
+                            </a>
+                        </div>
+                        <div class="product-bg-white rte" style="overflow-x: auto;">
+                            <table border="0" cellpadding="1" cellspacing="3" style="width: 100%;">
+                                <tbody>
+                                    <tr>
+                                        <?php
+                                        $count = 0;
+                                        while (have_rows('list_tien_ich')): the_row();
+                                            if ($count > 0 && $count % 7 == 0) echo '</tr><tr>';
+                                            $icon = get_sub_field('icon');
+                                            $title = get_sub_field('title_tien_ich');
+                                        ?>
+                                            <td>
+                                                <?php if ($icon):
+                                                    $icon_url = is_array($icon) ? $icon['url'] : wp_get_attachment_image_url($icon, 'full');
+                                                ?>
+                                                    <img src="<?php echo esc_url($icon_url); ?>" alt="<?php echo esc_attr($title); ?>" style="height: 15px; opacity: 0.9; width: 15px;">
+                                                <?php endif; ?>
+                                                &nbsp;<?php echo esc_html($title); ?>
+                                            </td>
+                                        <?php
+                                            $count++;
+                                        endwhile;
+                                        ?>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    <?php endif; ?>
 
                 </section>
 
 
-             
+
                 <?php
-                // Get tour price for booking section - display exactly as entered in ACF
-                $booking_tour_price = isset($tour_price) ? $tour_price : get_field('tour_price');
                 $booking_tour_title = get_the_title();
                 $booking_tour_id = get_the_ID();
                 ?>
                 <div class="product-bg-white evo-tour-booking " id="book-tour-now">
-                    <div class="tour-schedule-title"><?php _e('Đặt Tour', 'gnws'); ?></div>
+                    <div class="tour-schedule-title"><?php printf(__('Đặt %s', 'gnws'), $cate_name); ?></div>
                     <form>
                         <div class="pd_tour_variants clearfix">
                             <ul class="pd_variants_title clearfix row">
@@ -281,9 +344,9 @@ get_header();
                                 </div>
                             </div>
                             <div class="col-md-6 col-sm-5 add-to-cart col-12">
-                                <button type="submit" id="submit-table" class="d-none pull-right btn btn-default buynow add-to-cart button nomargin"><?php _e('Đặt Tour', 'gnws'); ?></button>
+                                <button type="submit" id="submit-table" class="d-none pull-right btn btn-default buynow add-to-cart button nomargin"><?php printf(__('Đặt %s', 'gnws'), $cate_name); ?></button>
                                 <div class="call-me-back">
-                                    <button class="btn-callmeback" type="button" data-toggle="modal" data-target="#myCallBack" title="<?php _e('Đặt Tour', 'gnws'); ?>"><?php _e('Đặt Tour', 'gnws'); ?></button>
+                                    <button class="btn-callmeback" type="button" data-toggle="modal" data-target="#myCallBack" title="<?php printf(__('Đặt %s', 'gnws'), $cate_name); ?>"><?php printf(__('Đặt %s', 'gnws'), $cate_name); ?></button>
                                 </div>
                             </div>
                         </div>
@@ -540,19 +603,6 @@ get_header();
 
 
     <?php
-    // Get current post's taxonomy terms
-    $current_post_id = get_the_ID();
-    $taxonomy_terms = get_the_terms($current_post_id, 'taxonomy_travel');
-    $term_ids = array();
-    $first_term_link = get_post_type_archive_link('travel_service');
-
-    if ($taxonomy_terms && !is_wp_error($taxonomy_terms)) {
-        foreach ($taxonomy_terms as $term) {
-            $term_ids[] = $term->term_id;
-        }
-        $first_term_link = get_term_link($taxonomy_terms[0]);
-    }
-
     $related_tours = new WP_Query(array(
         'post_type' => 'travel_service',
         'posts_per_page' => 12,
@@ -577,99 +627,17 @@ get_header();
                     <div class="product-bg-white">
                         <div class="related-product">
                             <div class="home-title text-center">
-                                <h2><a href="<?php echo esc_url($first_term_link); ?>" title="<?php _e('Các Tour tương tự', 'gnws'); ?>"><?php _e('Các Tour tương tự', 'gnws'); ?></a></h2>
+                                <h2><a href="<?php echo esc_url($first_term_link); ?>" title="<?php _e('Liên quan', 'gnws'); ?>"><?php _e('Liên quan', 'gnws'); ?></a></h2>
                             </div>
                             <div class="evo-owl-product clearfix">
                                 <?php
                                 while ($related_tours->have_posts()) : $related_tours->the_post();
-                                    $tour_id = get_the_ID();
-                                    $tour_title = get_the_title();
-                                    $tour_link = get_permalink();
-                                    $tour_thumbnail = get_the_post_thumbnail_url($tour_id, 'large');
-                                    if (!$tour_thumbnail) {
-                                        $tour_thumbnail = get_template_directory_uri() . '/assets/images/placeholder.jpg';
-                                    }
-
-                                    // Get ACF fields
-                                    $tour_price_raw = get_field('tour_price', $tour_id);
-                                    $tour_price_original_raw = get_field('tour_price_original', $tour_id);
-
-                                    // Clean and convert
-                                    $tour_price = $tour_price_raw ? (float) str_replace(['.', ','], ['', '.'], $tour_price_raw) : 0;
-                                    $tour_price_original = $tour_price_original_raw ? (float) str_replace(['.', ','], ['', '.'], $tour_price_original_raw) : 0;
-
-                                    $tour_time = get_field('tour_time', $tour_id);
-                                    $tour_departure = get_field('tour_departure_schedule', $tour_id);
-                                    $move_plain = get_field('move_plain', $tour_id);
-
-                                    // Calculate discount percentage
-                                    $discount_percent = 0;
-                                    if ($tour_price_original && $tour_price && $tour_price_original > $tour_price) {
-                                        $discount_percent = round((($tour_price_original - $tour_price) / $tour_price_original) * 100);
-                                    }
                                 ?>
                                     <div class="evo-slick">
-                                        <div class="evo-product-block-item">
-                                            <div class="img-tour">
-                                                <a class="imgWrap pt_67 img--cover" href="<?php echo esc_url($tour_link); ?>" title="<?php echo esc_attr($tour_title); ?>">
-                                                    <span class="imgWrap-item">
-                                                        <img style="opacity: 1;" class="lazy" src="<?php echo $tour_thumbnail; ?>" data-src="<?php echo esc_url($tour_thumbnail); ?>" alt="<?php echo esc_attr($tour_title); ?>" />
-                                                    </span>
-                                                </a>
-                                                <?php if ($discount_percent > 0) : ?>
-                                                    <span class="smart">- <?php echo esc_html($discount_percent); ?>% </span>
-                                                <?php endif; ?>
-                                            </div>
-                                            <div class="info-tour clearfix">
-                                                <h3><a href="<?php echo esc_url($tour_link); ?>" title="<?php echo esc_attr($tour_title); ?>"><?php echo esc_html($tour_title); ?></a></h3>
-                                                <div class="vote-box">
-                                                    <div class="meta-vote">
-                                                        <ul class="ct_course_list">
-                                                            <?php if ($move_plain) : foreach ($move_plain as $transport) :
-                                                                    $icon_id = $transport['icon'];
-                                                                    $icon_url = $icon_id ? wp_get_attachment_image_url($icon_id, 'thumbnail') : '';
-                                                                    $content = $transport['content'];
-                                                            ?>
-                                                                    <li data-toggle="tooltip" data-placement="top" title="<?php echo esc_attr($content); ?>">
-                                                                        <?php if ($icon_url) : ?>
-                                                                            <img src="<?php echo esc_url($icon_url); ?>" alt="<?php echo esc_attr($content); ?>" />
-                                                                        <?php endif; ?>
-                                                                    </li>
-                                                            <?php endforeach;
-                                                            endif; ?>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                                <div class="date-go">
-                                                    <ul class="ct_course_list">
-                                                        <?php if ($tour_departure) : ?>
-                                                            <li class="clearfix">
-                                                                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/tag_icon_4.svg" alt="<?php echo esc_attr($tour_departure); ?>" /> <?php _e('Lịch khởi hành:', 'gnws'); ?> <span><?php echo esc_html($tour_departure); ?></span>
-                                                            </li>
-                                                        <?php endif; ?>
-                                                        <?php if ($tour_time) : ?>
-                                                            <li class="clearfix">
-                                                                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/tag_icon_5.svg" alt="<?php echo esc_attr($tour_time); ?>" /> <?php _e('Thời gian:', 'gnws'); ?> <span><?php echo esc_html($tour_time); ?></span>
-                                                            </li>
-                                                        <?php endif; ?>
-                                                    </ul>
-                                                </div>
-
-                                                <div class="action-box">
-                                                    <?php if ($tour_price > 0) : ?>
-                                                        <div class="price-box">
-                                                            <?php echo esc_html(number_format($tour_price, 0, ',', '.')); ?>₫
-                                                            <?php if ($tour_price_original && $tour_price_original > $tour_price) : ?>
-                                                                <span class="compare-price"><?php echo esc_html(number_format($tour_price_original, 0, ',', '.')); ?>₫</span>
-                                                            <?php endif; ?>
-                                                        </div>
-                                                    <?php endif; ?>
-                                                    <div class="booking-box d-none">
-                                                        <a href="<?php echo esc_url($tour_link); ?>" title="<?php _e('Đặt Tour', 'gnws'); ?>" class="btn btn-sm"><?php _e('ĐẶT TOUR', 'gnws'); ?></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <?php
+                                        set_query_var('tour_post', get_post());
+                                        get_template_part('template-parts/content', 'travel_service');
+                                        ?>
                                     </div>
                                 <?php endwhile;
                                 wp_reset_postdata(); ?>
@@ -682,12 +650,19 @@ get_header();
     <?php endif; ?>
 
     <?php
-    // Random tours section
+    // Random tours section - Filtered by current category
     $random_tours = new WP_Query(array(
         'post_type' => 'travel_service',
         'posts_per_page' => 12,
         'post_status' => 'publish',
-        'post__not_in' => array(get_the_ID()),
+        'post__not_in' => array($current_post_id),
+        'tax_query' => !empty($term_ids) ? array(
+            array(
+                'taxonomy' => 'taxonomy_travel',
+                'field' => 'term_id',
+                'terms' => $term_ids
+            )
+        ) : array(),
         'orderby' => 'rand'
     ));
 
@@ -699,98 +674,17 @@ get_header();
                     <div class="product-bg-white">
                         <div class="related-product">
                             <div class="home-title text-center">
-                                <h2><a href="<?php echo get_post_type_archive_link('travel_service'); ?>" title="<?php _e('Tour giờ chót giá tốt', 'gnws'); ?>"><span><?php _e('Tour giờ chót', 'gnws'); ?></span> <?php _e('giá tốt', 'gnws'); ?></a></h2>
+                                <h2><a href="<?php echo get_post_type_archive_link('travel_service'); ?>" title="<?php _e('Tour giờ chót giá tốt', 'gnws'); ?>"><?php echo ($taxonomy_terms && !is_wp_error($taxonomy_terms)) ? $taxonomy_terms[0]->name : ''; ?> <?php _e('giá tốt', 'gnws'); ?></a></h2>
                             </div>
                             <div class="evo-owl-product clearfix">
                                 <?php
                                 while ($random_tours->have_posts()) : $random_tours->the_post();
-                                    $tour_id = get_the_ID();
-                                    $tour_title = get_the_title();
-                                    $tour_link = get_permalink();
-                                    $tour_thumbnail = get_the_post_thumbnail_url($tour_id, 'large');
-                                    if (!$tour_thumbnail) {
-                                        $tour_thumbnail = get_template_directory_uri() . '/assets/images/placeholder.jpg';
-                                    }
-
-                                    // Get ACF fields
-                                    $tour_price_raw = get_field('tour_price', $tour_id);
-                                    $tour_price_original_raw = get_field('tour_price_original', $tour_id);
-
-                                    // Clean and convert
-                                    $tour_price = $tour_price_raw ? (float) str_replace(['.', ','], ['', '.'], $tour_price_raw) : 0;
-                                    $tour_price_original = $tour_price_original_raw ? (float) str_replace(['.', ','], ['', '.'], $tour_price_original_raw) : 0;
-
-                                    $tour_time = get_field('tour_time', $tour_id);
-                                    $tour_departure = get_field('tour_departure_schedule', $tour_id);
-                                    $move_plain = get_field('move_plain', $tour_id);
-
-                                    // Calculate discount percentage
-                                    $discount_percent = 0;
-                                    if ($tour_price_original && $tour_price && $tour_price_original > $tour_price) {
-                                        $discount_percent = round((($tour_price_original - $tour_price) / $tour_price_original) * 100);
-                                    }
                                 ?>
                                     <div class="evo-slick">
-                                        <div class="evo-product-block-item">
-                                            <div class="img-tour">
-                                                <a class="imgWrap pt_67 img--cover" href="<?php echo esc_url($tour_link); ?>" title="<?php echo esc_attr($tour_title); ?>">
-                                                    <span class="imgWrap-item">
-                                                        <img style="opacity: 1;" class="lazy" src="<?php echo $tour_thumbnail; ?>" data-src="<?php echo esc_url($tour_thumbnail); ?>" alt="<?php echo esc_attr($tour_title); ?>" />
-                                                    </span>
-                                                </a>
-                                                <?php if ($discount_percent > 0) : ?>
-                                                    <span class="smart">- <?php echo esc_html($discount_percent); ?>% </span>
-                                                <?php endif; ?>
-                                            </div>
-                                            <div class="info-tour clearfix">
-                                                <h3><a href="<?php echo esc_url($tour_link); ?>" title="<?php echo esc_attr($tour_title); ?>"><?php echo esc_html($tour_title); ?></a></h3>
-                                                <div class="vote-box">
-                                                    <div class="meta-vote">
-                                                        <ul class="ct_course_list">
-                                                            <?php if ($move_plain) : foreach ($move_plain as $transport) :
-                                                                    $icon_id = $transport['icon'];
-                                                                    $icon_url = $icon_id ? wp_get_attachment_image_url($icon_id, 'thumbnail') : '';
-                                                                    $content = $transport['content'];
-                                                            ?>
-                                                                    <li data-toggle="tooltip" data-placement="top" title="<?php echo esc_attr($content); ?>">
-                                                                        <?php if ($icon_url) : ?>
-                                                                            <img src="<?php echo esc_url($icon_url); ?>" alt="<?php echo esc_attr($content); ?>" />
-                                                                        <?php endif; ?>
-                                                                    </li>
-                                                            <?php endforeach;
-                                                            endif; ?>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                                <div class="date-go">
-                                                    <ul class="ct_course_list">
-                                                        <?php if ($tour_departure) : ?>
-                                                            <li class="clearfix">
-                                                                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/tag_icon_4.svg" alt="<?php echo esc_attr($tour_departure); ?>" /> <?php _e('Lịch khởi hành:', 'gnws'); ?> <span><?php echo esc_html($tour_departure); ?></span>
-                                                            </li>
-                                                        <?php endif; ?>
-                                                        <?php if ($tour_time) : ?>
-                                                            <li class="clearfix">
-                                                                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/tag_icon_5.svg" alt="<?php echo esc_attr($tour_time); ?>" /> <?php _e('Thời gian:', 'gnws'); ?> <span><?php echo esc_html($tour_time); ?></span>
-                                                            </li>
-                                                        <?php endif; ?>
-                                                    </ul>
-                                                </div>
-                                                <div class="action-box">
-                                                    <?php if ($tour_price > 0) : ?>
-                                                        <div class="price-box">
-                                                            <?php echo esc_html(number_format($tour_price, 0, ',', '.')); ?>₫
-                                                            <?php if ($tour_price_original && $tour_price_original > $tour_price) : ?>
-                                                                <span class="compare-price"><?php echo esc_html(number_format($tour_price_original, 0, ',', '.')); ?>₫</span>
-                                                            <?php endif; ?>
-                                                        </div>
-                                                    <?php endif; ?>
-                                                    <div class="booking-box d-none">
-                                                        <a href="<?php echo esc_url($tour_link); ?>" title="<?php _e('Đặt Tour', 'gnws'); ?>" class="btn btn-sm"><?php _e('ĐẶT TOUR', 'gnws'); ?></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <?php
+                                        set_query_var('tour_post', get_post());
+                                        get_template_part('template-parts/content', 'travel_service');
+                                        ?>
                                     </div>
                                 <?php endwhile;
                                 wp_reset_postdata(); ?>

@@ -7,6 +7,7 @@ jQuery(document).ready(function ($) {
 		cssEase: 'linear',
 		dots: false,
 		arrows: false,
-		infinite: true
+		infinite: true,
+		adaptiveHeight: true
 	});
 });

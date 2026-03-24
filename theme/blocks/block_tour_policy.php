@@ -34,7 +34,6 @@ if (!empty($block['data']['preview_image_help']) && !empty($is_preview)): ?>
                 <?php if ($list_policy && is_array($list_policy) && count($list_policy) > 0): ?>
                     <?php foreach ($list_policy as $policy_item): ?>
                         <?php
-                        // Skip if hidden
                         if (!empty($policy_item['hide_block'])) {
                             continue;
                         }
@@ -43,7 +42,6 @@ if (!empty($block['data']['preview_image_help']) && !empty($is_preview)): ?>
                         $title = $policy_item['title'];
                         $description = $policy_item['description'];
 
-                        // Get icon URL
                         $icon_url = '';
                         if ($icon_id) {
                             $icon_url = wp_get_attachment_image_url($icon_id, 'medium');

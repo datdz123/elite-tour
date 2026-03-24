@@ -636,3 +636,11 @@ function gnws_render_featured_posts()
 	</aside>
 <?php
 }
+
+/**
+ * Display navigation to next/previous set of posts when applicable.
+ */
+function gnws_the_posts_navigation()
+{
+	the_posts_navigation();
+}

@@ -1,0 +1,23 @@
+{
+    "key": "ui_options_page_69856b443d1d4",
+    "title": "Cài đặt web",
+    "active": true,
+    "menu_order": 0,
+    "page_title": "Cài đặt web",
+    "menu_slug": "cai-dat-web",
+    "parent_slug": "cai-dat-site",
+    "advanced_configuration": false,
+    "icon_url": "",
+    "menu_title": "",
+    "position": null,
+    "redirect": false,
+    "description": "",
+    "menu_icon": [],
+    "update_button": "Cập nhật",
+    "updated_message": "Options Updated",
+    "capability": "edit_posts",
+    "data_storage": "options",
+    "post_id": "",
+    "autoload": false,
+    "modified": 1770351428
+}

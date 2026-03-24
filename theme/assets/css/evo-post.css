@@ -72,7 +72,7 @@ label {
 }
 
 .evo-article .article-details a {
-    color: #1a3863
+    color: var(--primary-color)
 }
 
 .evo-article .article-details a:hover,
@@ -142,9 +142,9 @@ label {
 }
 
 .tag_article a:hover {
-    background-color: #1a3863;
+    background-color: var(--primary-color);
     color: #fff;
-    border-color: #1a3863
+    border-color: var(--primary-color)
 }
 
 .evo-article-toolbar {
@@ -172,7 +172,7 @@ label {
 }
 
 .evo-article-toolbar .evo-article-toolbar-left .evo-article-toolbar-head {
-    color: #1a3863;
+    color: var(--primary-color);
     font-weight: 500;
     display: inline-block;
     float: left;
@@ -225,12 +225,12 @@ label {
 .evo-article-toolbar .evo-article-toolbar-right a {
     font-size: 16px;
     letter-spacing: 2px;
-    color: #1a3863;
+    color: var(--primary-color);
     font-weight: 500
 }
 
 .evo-article-toolbar .evo-article-toolbar-right a svg {
-    color: #1a3863;
+    color: var(--primary-color);
     vertical-align: -2px;
     height: 12px
 }
@@ -283,7 +283,7 @@ label {
     margin-bottom: 15px;
     margin-top: 15px;
     background: #fefefe;
-    border: 1px solid #1a3863;
+    border: 1px solid var(--primary-color);
     border-radius: 4px;
     padding: 10px
 }
@@ -332,13 +332,13 @@ label {
 
 .blog_related .blog_entry h3 a:hover,
 .blog_related .blog_entry h3 a:focus {
-    color: #1a3863;
+    color: var(--primary-color);
     text-decoration: none
 }
 
 .blog_related .blog_entry h3 a:hover i,
 .blog_related .blog_entry h3 a:focus i {
-    color: #1a3863
+    color: var(--primary-color)
 }
 
 .aside-item.collection-category .aside-title {
@@ -371,7 +371,7 @@ label {
 
 .aside-item.collection-category .aside-content .navbar-pills .nav-item a:hover,
 .aside-item.collection-category .aside-content .navbar-pills .nav-item a:focus {
-    color: #1a3863;
+    color: var(--primary-color);
     background-color: transparent
 }
 
@@ -487,7 +487,7 @@ label {
 
 .aside-item.top-news .item .info .title a:hover,
 .aside-item.top-news .item .info .title a:focus {
-    color: #1a3863
+    color: var(--primary-color)
 }
 
 .evo-relative-product-article .slick-slide {
@@ -580,8 +580,8 @@ label {
 }
 
 .evo-relative-product-article .slick-dots li.slick-active button {
-    border-color: #1a3863;
-    background-color: #1a3863;
+    border-color: var(--primary-color);
+    background-color: var(--primary-color);
     border-radius: 0;
     width: 10px
 }
@@ -639,6 +639,7 @@ label {
 header .nav-item.has-childs>a>svg {
     margin-left: 2px;
 }
-.rank-math-breadcrumb p{
-    margin:0;
+
+.rank-math-breadcrumb p {
+    margin: 0;
 }

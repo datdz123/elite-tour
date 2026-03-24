@@ -178,7 +178,6 @@ function gnws_scripts()
 	wp_enqueue_style('gnws-slick', get_template_directory_uri() . '/assets/css/slick.css', array(), GNWS_VERSION);
 	wp_enqueue_style('gnws-slick-theme', get_template_directory_uri() . '/assets/css/slick-theme.css', array(), GNWS_VERSION);
 	wp_enqueue_style('gnws-evo-index', get_template_directory_uri() . '/assets/css/evo-index.scss.css', array(), GNWS_VERSION);
-	wp_enqueue_style('gnws-evo-main', get_template_directory_uri() . '/assets/css/evo-main.scss.css', array(), GNWS_VERSION);
 	wp_enqueue_style('gnws-ae-multilang', get_template_directory_uri() . '/assets/css/ae-multilang-custom.css', array(), GNWS_VERSION);
 	wp_enqueue_style('gnws-style-update', get_template_directory_uri() . '/assets/css/style_update.scss.css', array(), GNWS_VERSION);
 	wp_enqueue_style('gnws-css-font', get_template_directory_uri() . '/assets/fonts/font.css', array(), GNWS_VERSION);
@@ -187,6 +186,7 @@ function gnws_scripts()
 	wp_enqueue_style('gnws-evo-blog', get_template_directory_uri() . '/assets/css/evo-blog.css', array(), GNWS_VERSION);
 	wp_enqueue_style('gnws-evo-post', get_template_directory_uri() . '/assets/css/evo-post.css', array(), GNWS_VERSION);
 	wp_enqueue_style('gnws-evo-lightbox', get_template_directory_uri() . '/assets/css/lightbox.css', array(), GNWS_VERSION);
+	wp_enqueue_style('gnws-evo-main', get_template_directory_uri() . '/assets/css/evo-main.scss.css', array(), GNWS_VERSION);
 
 	// JS Files
 	wp_enqueue_script('jquery');
@@ -306,7 +306,6 @@ function gnws_no_term_parents_taxonomy_khoi_hanh($url, $term, $taxonomy)
 	return $url;
 }
 
-// Add custom taxonomy_khoi_hanh rewrite rules
 function gnws_no_taxonomy_khoi_hanh_parents_rewrite_rules($flash = false)
 {
 	$terms = get_terms(array(
@@ -326,7 +325,6 @@ function gnws_no_taxonomy_khoi_hanh_parents_rewrite_rules($flash = false)
 }
 add_action('init', 'gnws_no_taxonomy_khoi_hanh_parents_rewrite_rules');
 
-// Fix 404 when creating/editing/deleting taxonomy_khoi_hanh terms
 add_action('create_term', 'gnws_taxonomy_khoi_hanh_term_edit_success', 10, 3);
 add_action('edit_terms', 'gnws_taxonomy_khoi_hanh_term_edit_success', 10, 2);
 add_action('delete_term', 'gnws_taxonomy_khoi_hanh_term_edit_success', 10, 3);
@@ -341,13 +339,11 @@ function gnws_taxonomy_khoi_hanh_term_edit_success($term_id, $tt_id_or_taxonomy 
 
 
 
-// Fix 404 when creating/editing/deleting taxonomy_travel terms
 add_action('create_term', 'gnws_taxonomy_travel_term_edit_success', 10, 3);
 add_action('edit_terms', 'gnws_taxonomy_travel_term_edit_success', 10, 2);
 add_action('delete_term', 'gnws_taxonomy_travel_term_edit_success', 10, 3);
 function gnws_taxonomy_travel_term_edit_success($term_id, $tt_id_or_taxonomy = '', $taxonomy = '')
 {
-	// Handle different hook signatures
 	$tax = is_string($tt_id_or_taxonomy) && !is_numeric($tt_id_or_taxonomy) ? $tt_id_or_taxonomy : $taxonomy;
 	if ($tax == 'taxonomy_travel' || empty($tax)) {
 		gnws_no_taxonomy_travel_parents_rewrite_rules(true);
@@ -501,7 +497,6 @@ function gnws_galley_img_rewrite_rules($flash = false)
 }
 add_action('init', 'gnws_galley_img_rewrite_rules');
 
-// Flush rewrite rules when galley_img post is saved/updated/deleted
 add_action('save_post_galley_img', 'gnws_galley_img_flush_rules', 10, 1);
 
 function gnws_galley_img_flush_rules($post_id)
@@ -518,3 +513,35 @@ add_action('delete_post', function ($post_id) {
 		gnws_galley_img_rewrite_rules(true);
 	}
 }, 10, 1);
+
+
+add_action('after_setup_theme', function () {
+	add_theme_support('editor-styles');
+
+	$editor_styles = ['style.css'];
+
+	$css_files = glob(get_template_directory() . '/assets/css/*.css');
+	if ($css_files) {
+		foreach ($css_files as $file) {
+			$editor_styles[] = 'assets/css/' . basename($file);
+		}
+	}
+
+	add_editor_style($editor_styles);
+});
+
+
+add_action('wp_head', function () {
+    $primary = get_field('color_main', 'option');
+
+    if (!$primary) {
+        $primary = '#1a3863'; // fallback nếu admin chưa nhập
+    }
+    ?>
+    <style>
+        :root {
+            --primary-color: <?php echo esc_attr($primary); ?>;
+        }
+    </style>
+    <?php
+});

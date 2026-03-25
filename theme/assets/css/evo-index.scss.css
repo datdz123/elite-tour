@@ -206,27 +206,11 @@ body {
         width: auto;
         max-width: unset;
         flex: auto;
-        min-width: 360px
     }
 }
 
-@media (max-width: 480px) {
-    .section_tour_policy .row .col-lg-4 {
-        min-width: 415px
-    }
-}
 
-@media (max-width: 376px) {
-    .section_tour_policy .row .col-lg-4 {
-        min-width: 375px
-    }
-}
 
-@media (max-width: 321px) {
-    .section_tour_policy .row .col-lg-4 {
-        min-width: 330px
-    }
-}
 
 .section_tour_policy .row .col-lg-4 .evo-tour-policy-item {
     margin: 20px 0

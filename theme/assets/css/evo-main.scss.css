@@ -5190,13 +5190,11 @@ header.header .evo-main-nav .evo-header-mobile .logo-wrapper img {
         background-image: none;
         border: 1px solid transparent;
         border-radius: 4px;
-        margin-top: 25px
     }
 }
 
 @media (max-width: 991px) and (max-width: 569px) {
     header.header .evo-main-nav .evo-header-mobile #trigger-mobile {
-        margin-top: 20px;
         margin-left: 5px
     }
 }
@@ -7313,3 +7311,42 @@ footer.footer .footer_bct a img {
 .def-content .item.mail .img {
     background: #d5493c
 }
+
+
+
+									.evo-lang-dropdown:hover .lang-list {
+										display: block !important;
+									}
+
+									.evo-lang-dropdown .lang-list a:hover {
+										background: #f8f9fa;
+										color: #007bff !important;
+									}
+
+									@media (max-width: 991px) {
+										.evo-header-mobile {
+                                            padding: 0 7px;
+                                            width: 100%;
+											display: flex !important;
+											align-items: center;
+											justify-content: space-between;
+										}
+
+										.evo-lang-mobile {
+											margin-left: auto;
+											margin-right: 15px;
+										}
+
+										.evo-lang-mobile .lang-list {
+											right: -10px;
+											left: auto;
+										}
+
+										.mobile-main-menu .evo-lang-dropdown:hover .lang-list {
+											display: none !important;
+										}
+
+										.mobile-main-menu .evo-lang-dropdown.is-open .lang-list {
+											display: block !important;
+										}
+									}

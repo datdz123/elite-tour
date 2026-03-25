@@ -308,6 +308,28 @@ require get_template_directory() . '/inc/customizer-widget.php';
 //     remove_submenu_page('themes.php', 'theme-editor.php');
 // }, 999);
 
+// add_filter('acf/settings/show_admin', '__return_false');
+
+// add_action('admin_menu', function () {
+// 	remove_submenu_page('themes.php', 'theme-editor.php');
+// }, 999);
+// Disable editor cho page
+add_action('admin_init', function() {
+    global $pagenow;
+
+    if ($pagenow === 'post.php' || $pagenow === 'post-new.php') {
+
+        $post_id = isset($_GET['post']) ? $_GET['post'] : null;
+
+        if ($post_id) {
+            $template = get_page_template_slug($post_id);
+
+            if ($template === 'home.php') { // đổi đúng tên file của bạn
+                remove_post_type_support('page', 'editor');
+            }
+        }
+    }
+});
 /**
  * Remove parent slug from taxonomy_travel (for travel_service post type)
  */
@@ -595,3 +617,4 @@ add_action('wp_head', function () {
     </style>
     <?php
 });
+

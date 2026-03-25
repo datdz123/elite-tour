@@ -75,34 +75,7 @@
 										<?php endforeach; ?>
 									</ul>
 								</div>
-								<style>
-									.evo-lang-dropdown:hover .lang-list {
-										display: block !important;
-									}
-
-									.evo-lang-dropdown .lang-list a:hover {
-										background: #f8f9fa;
-										color: #007bff !important;
-									}
-
-									@media (max-width: 991px) {
-										.evo-header-mobile {
-											display: flex !important;
-											align-items: center;
-											justify-content: space-between;
-										}
-
-										.evo-lang-mobile {
-											margin-left: auto;
-											margin-right: 15px;
-										}
-
-										.evo-lang-mobile .lang-list {
-											right: -10px;
-											left: auto;
-										}
-									}
-								</style>
+							
 						<?php endif;
 						endif; ?>
 						<?php
@@ -149,7 +122,7 @@
 		<div class="evo-main-nav">
 			<div class="container">
 				<div class="row align-items-center">
-					<div class="col-lg-2 col-12 logo evo-header-mobile">
+					<div class=" logo evo-header-mobile">
 						<?php
 						$site_name = get_bloginfo('name');
 						$custom_logo_id = get_theme_mod('custom_logo');
@@ -162,40 +135,6 @@
 
 							<?php endif; ?>
 						</a>
-						<div class="evo-lang-mobile d-lg-none">
-							<?php
-							if (function_exists('pll_the_languages')) :
-								$languages = pll_the_languages(array('raw' => 1, 'hide_if_no_translation' => 0));
-								if ($languages) :
-									$current_lang = array_filter($languages, function ($l) {
-										return $l['current_lang'];
-									});
-									$current_lang = reset($current_lang);
-							?>
-									<div class="evo-lang-dropdown" style="position: relative; display: inline-block;">
-										<div class="lang-show" style="cursor: pointer; display: flex; align-items: center; gap: 5px; color: #333; font-size: 13px;>
-											<?php if ($current_lang) : ?>
-												<img src="<?php echo esc_url($current_lang['flag']); ?>" alt="<?php echo esc_attr($current_lang['name']); ?>" style="width: 18px; height: auto;">
-											<?php endif; ?>
-											<svg width="8" height="5" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-												<path d="M1 1L5 5L9 1" stroke="#333" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-											</svg>
-										</div>
-										<ul class="lang-list" style="position: absolute; top: 100%; right: 0; background: #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.1); border-radius: 4px; padding: 5px 0; margin: 0; list-style: none; display: none; z-index: 10001; min-width: 120px;">
-											<?php foreach ($languages as $lang) : ?>
-												<li>
-													<a href="<?php echo esc_url($lang['url']); ?>" style="display: flex; align-items: center; gap: 10px; padding: 8px 12px; color: #333; text-decoration: none; font-size: 13px;">
-														<img src="<?php echo esc_url($lang['flag']); ?>" alt="<?php echo esc_attr($lang['name']); ?>" style="width: 18px; height: auto;">
-														<span><?php echo esc_html($lang['name']); ?></span>
-													</a>
-												</li>
-											<?php endforeach; ?>
-										</ul>
-									</div>
-							<?php endif;
-							endif; ?>
-						</div>
-
 						<button type="button" class="evo-flexitem evo-flexitem-fill d-sm-inline-block d-lg-none"
 							id="trigger-mobile" aria-label="Menu Mobile">
 							<span class="icon-bar"></span>
@@ -465,6 +404,44 @@
 				<div><a rel="nofollow" href="/account/register" title="Đăng ký">Đăng ký</a></div>
 			</div>
 			<div class="la-scroll-fix-infor-user">
+				<?php
+					if (function_exists('pll_the_languages')) :?>
+				<div class="evo-lang-mobile d-lg-none" style="padding: 12px 15px; border-bottom: 1px solid #f1f1f1;">
+					<?php
+						$languages = pll_the_languages(array('raw' => 1, 'hide_if_no_translation' => 0));
+						if ($languages) :
+							$current_lang = array_filter($languages, function ($l) {
+								return $l['current_lang'];
+							});
+							$current_lang = reset($current_lang);
+					?>
+							<div class="evo-lang-dropdown" style="position: relative; display: inline-block; width: 100%;">
+								<div class="lang-show" style="cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 8px; color: #333; font-size: 13px;">
+									<span style="display: flex; align-items: center; gap: 8px;">
+										<?php if ($current_lang) : ?>
+											<img src="<?php echo esc_url($current_lang['flag']); ?>" alt="<?php echo esc_attr($current_lang['name']); ?>" style="width: 18px; height: auto;">
+											<span><?php echo esc_html($current_lang['name']); ?></span>
+										<?php endif; ?>
+									</span>
+									<svg width="8" height="5" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path d="M1 1L5 5L9 1" stroke="#333" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+									</svg>
+								</div>
+								<ul class="lang-list" style="position: static; background: #fff; box-shadow: none; border-radius: 4px; padding: 8px 0 0; margin: 0; list-style: none; display: none; z-index: 10001; min-width: 120px;">
+									<?php foreach ($languages as $lang) : ?>
+										<li>
+											<a href="<?php echo esc_url($lang['url']); ?>" style="display: flex; align-items: center; gap: 10px; padding: 8px 0; color: #333; text-decoration: none; font-size: 13px;">
+												<img src="<?php echo esc_url($lang['flag']); ?>" alt="<?php echo esc_attr($lang['name']); ?>" style="width: 18px; height: auto;">
+												<span><?php echo esc_html($lang['name']); ?></span>
+											</a>
+										</li>
+									<?php endforeach; ?>
+								</ul>
+							</div>
+					<?php
+					endif; ?>
+				</div>
+				<?php endif; ?>
 				<ul class="la-nav-list-items">
 					<?php
 					$menu_location = 'primary';
@@ -565,9 +542,34 @@
 		</div>
 	</header>
 
-	<style>
+	
+	<script>
+		jQuery(function ($) {
+			$(document).on('click', '.mobile-main-menu .evo-lang-mobile .lang-show', function (e) {
+				e.preventDefault();
+				e.stopPropagation();
 
-		header.header .evo-main-nav .evo-header-mobile #trigger-mobile{
-			margin-top: 0 !important;
-		}
-	</style>
+				var $dropdown = $(this).closest('.evo-lang-dropdown');
+				var $list = $dropdown.find('.lang-list');
+				var isOpen = $dropdown.hasClass('is-open');
+
+				$('.mobile-main-menu .evo-lang-mobile .evo-lang-dropdown').not($dropdown).removeClass('is-open');
+				$('.mobile-main-menu .evo-lang-mobile .lang-list').not($list).stop(true, true).slideUp(150);
+
+				if (isOpen) {
+					$dropdown.removeClass('is-open');
+					$list.stop(true, true).slideUp(150);
+				} else {
+					$dropdown.addClass('is-open');
+					$list.stop(true, true).slideDown(150);
+				}
+			});
+
+			$(document).on('click', function (e) {
+				if (!$(e.target).closest('.mobile-main-menu .evo-lang-mobile .evo-lang-dropdown').length) {
+					$('.mobile-main-menu .evo-lang-mobile .evo-lang-dropdown').removeClass('is-open');
+					$('.mobile-main-menu .evo-lang-mobile .lang-list').stop(true, true).slideUp(150);
+				}
+			});
+		});
+	</script>
